@@ -8,7 +8,7 @@ import { v4 as uuid } from 'uuid'
 export class UserService {
   private _users: User[] = []
   private _currentUser?: User
-  private _commonFields: ['username', 'password', 'email'] = ['username', 'password', 'email']
+  private _commonFields = ['username', 'password', 'email'] as const
 
   get users() {
     return this._users
