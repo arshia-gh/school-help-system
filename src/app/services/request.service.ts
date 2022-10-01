@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { CreateRequest, Request, Tutorial, ramTut } from "../interfaces/Request.interface";
 import { v4 as uuid } from "uuid";
 
-
 @Injectable({
   providedIn: 'root'
 })

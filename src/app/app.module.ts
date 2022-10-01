@@ -12,11 +12,13 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { MaterialModule } from './material/material.module';
+import { MatNativeDateModule } from '@angular/material/core';
 import { ViewRequestsComponent, RequestDetailDialog } from './pages/view-requests/view-requests.component';
-import { AuthDialogComponent } from './auth-dialog/auth-dialog.component';
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent },
+  { path: 'signup', component: SignUpComponent },
   { path: 'requests', component: ViewRequestsComponent },
 ]
 
@@ -27,7 +29,7 @@ const appRoutes: Routes = [
     HeaderComponent,
     ViewRequestsComponent,
     RequestDetailDialog,
-    AuthDialogComponent
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +39,7 @@ const appRoutes: Routes = [
     MatButtonModule,
     MaterialModule,
     FormsModule,
+    MatNativeDateModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [],

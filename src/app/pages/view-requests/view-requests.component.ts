@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { RequestService } from 'src/app/services/request.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Request, Resource, Tutorial, isResource, isTutorial } from 'src/app/interfaces/Request.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTable } from '@angular/material/table';
 
 @Component({
   selector: 'app-view-requests',
@@ -10,10 +11,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./view-requests.component.scss']
 })
 export class ViewRequestsComponent implements OnInit {
-  filterBy = 'None';
+  @ViewChild(MatTable) table: MatTable<any>;
   sortBy = 'None';
+  orderBy = 'None';
 
-  filterType = {
+  sortType = {
     'School': [
       'A-Z',
       'Z-A'
@@ -28,15 +30,31 @@ export class ViewRequestsComponent implements OnInit {
     ],
   }
 
-  filterBySelected() : void {
-    this.sortBy = this.filterType[this.filterBy][0]; //select the first sorting
+  sortByChanged(): void {
+    this.orderBy = this.sortType[this.sortBy][0]; //select the first sorting
+    this.orderByChanged();
+  }
+
+  orderByChanged(): void {
+    const resolveProp = (obj, path) => path.split('.').reduce((o, p) => o ? o[p] : null, obj);
+
+    let propPath = {
+      'School': 'school.name',
+      'City': 'school.address.city',
+      'Request Date': 'requestDate'
+    }
+
+    this.requests.sort((a, b) => resolveProp(a, propPath[this.sortBy]) - resolveProp(b, propPath[this.sortBy]));
+    this.table.renderRows();
+
+    if (this.sortType[this.sortBy].indexOf(this.orderBy) > 0) this.requests.reverse();
   }
 
   constructor(public requestService: RequestService, public dialog: MatDialog, private _snackBar: MatSnackBar) { };
 
   requests = this.requestService.getRequest();
 
-  displayedColumns: string[] = ['id', 'description', 'requestDate'];
+  displayedColumns: string[] = ['id', 'description', 'requestDate', 'city', 'schoolName'];
 
   showDetails(id: string): void {
     const selectedRequest = this.requests.find(req => req.id == id);
