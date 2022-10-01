@@ -1,0 +1,47 @@
+<h1 mat-dialog-title>Request | {{request.type}}</h1>
+<mat-divider></mat-divider>
+<div fxLayout="column" fxLayoutAlign="center stretch">
+
+  <mat-grid-list cols="2" *ngIf="request.type === 'Tutorial'" rowHeight="50px">
+    <mat-grid-tile>Request ID</mat-grid-tile>
+    <mat-grid-tile>{{request.id}}</mat-grid-tile>
+
+    <mat-grid-tile> Proposed Date </mat-grid-tile>
+    <mat-grid-tile>{{$any(request).proposedDateTime | date : 'dd/MM/yyyy hh:mm aa'}}</mat-grid-tile>
+
+    <mat-grid-tile>Student Level</mat-grid-tile>
+    <mat-grid-tile>{{$any(request).studentLevel}}</mat-grid-tile>
+
+    <mat-grid-tile>Expected Number Of Student</mat-grid-tile>
+    <mat-grid-tile>{{$any(request).numOfStudent}}</mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-divider></mat-divider>
+  <h2 class="mat-h2">Make an offer</h2>
+  <mat-form-field appearance="outline">
+    <mat-label>Remarks</mat-label>
+    <input matInput [(ngModel)]="remarks">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" style="margin-bottom: 1px">
+  <button mat-raised-button (click)="onCloseClick()">Close</button>
+  <button mat-raised-button [mat-dialog-close]="remarks" cdkFocusInitial color="primary">Submit</button>
+</div>
+
+<style>
+  mat-grid-list {
+    margin: 8px 0 !important;
+  }
+
+  mat-grid-list mat-grid-tile:nth-child(odd) {
+    font-weight: bold;
+  }
+
+  .mat-grid-tile-content {
+    right: auto !important;
+  }
+
+  .mat-h2 {
+    margin-top: 12px !important;
+  }
+</style>
