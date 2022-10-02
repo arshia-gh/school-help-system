@@ -1,26 +1,31 @@
 import { Injectable } from "@angular/core";
-import { CreateRequest, Request, Tutorial, ramTut } from "../interfaces/Request.interface";
+import { CreateRequest, Request, Tutorial, RequestType, ResourceType, StudentLevel, Resource } from "../interfaces/Request.interface";
 import { v4 as uuid } from "uuid";
+import { SchoolService } from "./school.service";
+import { requests } from "./seed";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RequestService {
-  private _requests: Request[] = []
+  private _requests: Request[] = requests
 
-  constructor() {
-    for (let i = 0; i < 10; i++) {
-      this._requests.push(ramTut());
-    }
+  get requests(): Request[] {
+    return this._requests
   }
 
-  getRequest(): Request[] {
-    return this._requests;
-  }
-
-  addRequest(request: CreateRequest) {
+  addTutorial(request: CreateRequest<Tutorial>) {
     return this._requests.push({
       ...request,
+      type: RequestType.Tutorial,
+      id: uuid(),
+    })
+  }
+
+  addResource(request: CreateRequest<Resource>) {
+    return this._requests.push({
+      ...request,
+      type: RequestType.Resource,
       id: uuid(),
     })
   }

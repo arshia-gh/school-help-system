@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { RequestService } from 'src/app/services/request.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Request, Resource, Tutorial, isResource, isTutorial } from 'src/app/interfaces/Request.interface';
+import { BaseRequest, Resource, Tutorial, isResource, isTutorial } from 'src/app/interfaces/Request.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
+import { SchoolService } from 'src/app/services/school.service';
 
 @Component({
   selector: 'app-view-requests',
@@ -38,6 +39,7 @@ export class ViewRequestsComponent implements OnInit {
   orderByChanged(): void {
     const resolveProp = (obj, path) => path.split('.').reduce((o, p) => o ? o[p] : null, obj);
 
+
     let propPath = {
       'School': 'school.name',
       'City': 'school.address.city',
@@ -50,9 +52,15 @@ export class ViewRequestsComponent implements OnInit {
     if (this.sortType[this.sortBy].indexOf(this.orderBy) > 0) this.requests.reverse();
   }
 
-  constructor(public requestService: RequestService, public dialog: MatDialog, private _snackBar: MatSnackBar) { };
+  constructor(
+    public requestService: RequestService,
+    private schoolService: SchoolService,
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
+  ) {
+  };
 
-  requests = this.requestService.getRequest();
+  requests = this.requestService.requests
 
   displayedColumns: string[] = ['id', 'description', 'requestDate', 'city', 'schoolName'];
 
@@ -89,7 +97,7 @@ export class RequestDetailDialog {
 
   constructor(
     public dialogRef: MatDialogRef<RequestDetailDialog>,
-    @Inject(MAT_DIALOG_DATA) public request: Request,
+    @Inject(MAT_DIALOG_DATA) public request: BaseRequest,
   ) { }
 
   onCloseClick(): void {

@@ -5,7 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatButtonModule } from '@angular/material/button'
+import { RegisterSchoolFormComponent } from './register-school-form/register-school-form.component'
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatInputModule } from '@angular/material/input'
+import { MatGridListModule } from '@angular/material/grid-list'
+import { ReactiveFormsModule } from '@angular/forms';
+import { AdminFormComponent } from './register-school-form/admin-form/admin-form.component';
+import { SchoolFormComponent } from './register-school-form/school-form/school-form.component';
+import { ValidationErrorComponent } from './ui/validation-error/validation-error.component';
 import { FormsModule } from '@angular/forms';
 import { Routes } from '@angular/router';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
@@ -25,6 +34,10 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
+    RegisterSchoolFormComponent,
+    AdminFormComponent,
+    SchoolFormComponent,
+    ValidationErrorComponent,
     LandingPageComponent,
     HeaderComponent,
     ViewRequestsComponent,
@@ -35,8 +48,13 @@ const appRoutes: Routes = [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     FlexLayoutModule,
+
     MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatGridListModule,
     MaterialModule,
     FormsModule,
     MatNativeDateModule,
@@ -45,4 +63,5 @@ const appRoutes: Routes = [
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

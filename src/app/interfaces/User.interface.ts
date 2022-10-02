@@ -1,3 +1,5 @@
+import type { School } from "./School.interface"
+
 export enum UserType {
   SchoolAdmin = 'SchoolAdmin',
   Volunteer = 'Volunteer',
@@ -20,6 +22,7 @@ export type User = BaseUser & (SchoolAdmin | Volunteer)
 export interface SchoolAdmin extends BaseUser {
   position: string
   staffId: string
+  school: School
   type: UserType.SchoolAdmin
 }
 

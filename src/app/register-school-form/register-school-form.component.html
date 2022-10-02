@@ -1,0 +1,27 @@
+<form (ngSubmit)="submitHandler()" [formGroup]="form">
+  <div formGroupName="school" fxLayout="column">
+    <mat-form-field gdArea="schoolName" appearance="outline" color="primary">
+      <mat-label>School Name</mat-label>
+      <input matInput [formControl]="school.name">
+      <mat-error validation-error [control]="school.name"></mat-error>
+    </mat-form-field>
+    <div gdAreas="state city | address address" gdGap="0.75rem" gdRows="auto auto" formGroupName="address">
+      <mat-form-field gdArea="state" appearance="outline" color="primary">
+        <mat-label>State</mat-label>
+        <input matInput [formControl]="schoolAddress.state">
+        <mat-error validation-error [control]="schoolAddress.state"></mat-error>
+      </mat-form-field>
+      <mat-form-field gdArea="city" appearance="outline" color="primary">
+        <mat-label>City</mat-label>
+        <input matInput [formControl]="schoolAddress.city">
+        <mat-error validation-error [control]="schoolAddress.city"></mat-error>
+      </mat-form-field>
+      <mat-form-field gdArea="address" appearance="outline" color="primary">
+        <mat-label>Street</mat-label>
+        <input matInput [formControl]="schoolAddress.street" />
+        <mat-error validation-error [control]="schoolAddress.street"></mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <button mat-raised-button color="primary">Register</button>
+</form>
