@@ -39,7 +39,7 @@ export const requests: Request[] = [
   {
     id: '17664cd3-a4d3-4a96-80d1-f76b432051a6',
     description: 'need more mobile device',
-    requestDate: new Date(),
+    requestDate: new Date(2022, 9, 20),
     school: schools[0],
     numRequired: 10,
     resourceType: ResourceType.MobileDevice,
@@ -49,18 +49,18 @@ export const requests: Request[] = [
   {
     id: '5f704187-4423-4dd3-a5ca-292c5c4a16e1',
     description: 'Advanced teacher needed for History class.',
-    requestDate: new Date(),
+    requestDate: new Date(2022, 9, 1),
     school: schools[0],
     numOfStudent: 10,
     studentLevel: StudentLevel.Advanced,
-    proposedDateTime: new Date(),
+    proposedDateTime: new Date(2022, 9, 3),
     type: RequestType.Tutorial,
     offers: []
   },
   {
     id: '9458c6dc-6347-4c6b-b69b-5366f3cb2149',
     description: 'need more mobile for new student',
-    requestDate: new Date(),
+    requestDate: new Date(2022, 9, 3),
     school: schools[1],
     numRequired: 30,
     resourceType: ResourceType.MobileDevice,
@@ -70,7 +70,7 @@ export const requests: Request[] = [
   {
     id: 'aefb7fd0-806b-4917-a6b3-2ffabcb8eeff',
     description: 'I need help tomorrow',
-    requestDate: new Date(),
+    requestDate: new Date(2022, 9, 13),
     school: schools[1],
     numRequired: 5,
     resourceType: ResourceType.NetworkingEquipment,
@@ -80,7 +80,7 @@ export const requests: Request[] = [
   {
     id: '513cbd92-8ac4-4348-823d-13957851047a',
     description: 'need more computer for new student',
-    requestDate: new Date(),
+    requestDate: new Date(2021, 12, 15),
     school: schools[0],
     numRequired: 10,
     resourceType: ResourceType.PersonalComputer,
@@ -90,18 +90,18 @@ export const requests: Request[] = [
   {
     id: '9dc17073-c942-4f74-8568-2d2e31991a0c',
     description: 'Chinese teacher required',
-    requestDate: new Date(),
+    requestDate: new Date(2022, 9, 15 ),
     school: schools[1],
     numOfStudent: 10,
     studentLevel: StudentLevel.Intermediate,
-    proposedDateTime: new Date(),
+    proposedDateTime: new Date(2022, 9, 25),
     type: RequestType.Tutorial,
     offers: []
   },
   {
     id: '6e1de214-8d1f-484d-9434-4fc9974fde2b',
     description: 'need android phone',
-    requestDate: new Date(),
+    requestDate: new Date(2022, 8, 1),
     school: schools[1],
     numRequired: 7,
     resourceType: ResourceType.MobileDevice,
@@ -111,11 +111,11 @@ export const requests: Request[] = [
   {
     id: '50319ad1-89e6-4524-9b56-45d12ce56e72',
     description: 'math teacher required',
-    requestDate: new Date(),
+    requestDate: new Date(2022, 8, 22),
     school: schools[0],
     numOfStudent: 35,
     studentLevel: StudentLevel.Beginner,
-    proposedDateTime: new Date(),
+    proposedDateTime: new Date(2022, 9, 10),
     type: RequestType.Tutorial,
     offers: []
   },

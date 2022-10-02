@@ -5,6 +5,7 @@ import { BaseRequest, Resource, Tutorial, isResource, isTutorial } from 'src/app
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { SchoolService } from 'src/app/services/school.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-view-requests',
@@ -13,56 +14,61 @@ import { SchoolService } from 'src/app/services/school.service';
 })
 export class ViewRequestsComponent implements OnInit {
   @ViewChild(MatTable) table: MatTable<any>;
-  sortBy = 'None';
-  orderBy = 'None';
-
-  sortType = {
-    'School': [
-      'A-Z',
-      'Z-A'
-    ],
-    'City': [
-      'A-Z',
-      'Z-A'
-    ],
-    'Request Date': [
-      'Newest',
-      'Oldest'
-    ],
-  }
-
-  sortByChanged(): void {
-    this.orderBy = this.sortType[this.sortBy][0]; //select the first sorting
-    this.orderByChanged();
-  }
-
-  orderByChanged(): void {
-    const resolveProp = (obj, path) => path.split('.').reduce((o, p) => o ? o[p] : null, obj);
-
-
-    let propPath = {
-      'School': 'school.name',
-      'City': 'school.address.city',
-      'Request Date': 'requestDate'
-    }
-
-    this.requests.sort((a, b) => resolveProp(a, propPath[this.sortBy]) - resolveProp(b, propPath[this.sortBy]));
-    this.table.renderRows();
-
-    if (this.sortType[this.sortBy].indexOf(this.orderBy) > 0) this.requests.reverse();
-  }
+  filterBy = 'None';
+  filterValue = 'None';
+  filterTypes = ['School', 'City', 'Request Date']
+  filterOptions = [];
+  source = this.requestService.requests;
+  requests = this.source;
+  displayedColumns: string[] = ['id', 'description', 'requestDate', 'city', 'schoolName'];
 
   constructor(
-    public requestService: RequestService,
+    private requestService: RequestService,
     private schoolService: SchoolService,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private _snackBar: MatSnackBar
   ) {
   };
 
-  requests = this.requestService.requests
+  private dateOptions = ['Today', 'Last 7 days', 'Last 30 days'];
 
-  displayedColumns: string[] = ['id', 'description', 'requestDate', 'city', 'schoolName'];
+  private propPath = {
+    'School': 'school.name',
+    'City': 'school.address.city',
+    // 'Request Date': 'requestDate'
+  }
+
+  private isFilteredByDate = () => this.filterBy === 'Request Date';
+
+  private resolveProp = (obj, path) => path.split('.').reduce((o, p) => o ? o[p] : null, obj);
+
+  filterByChanged(): void {
+    this.filterValue = 'None';
+    this.requests = this.source;
+
+    if (this.isFilteredByDate()) {
+      this.filterOptions = this.dateOptions;
+      return;
+    }
+
+    let options = this.source.map(u => this.resolveProp(u, this.propPath[this.filterBy]));
+    this.filterOptions = [...new Set(options)]
+  }
+
+  filterValueChanged(): void {
+
+    if (this.isFilteredByDate()) {
+      let days = [0, 7, 30];
+      let index = this.dateOptions.indexOf(this.filterValue);
+      const minDate: Date = new Date(Date.now() - days[index] * 24 * 60 * 60 * 1000);
+      console.log(minDate)
+      this.requests = this.source.filter(r => r.requestDate > minDate);
+    }
+
+    this.requests = this.source.filter(r =>
+      this.filterValue === this.resolveProp(r, this.propPath[this.filterBy]));
+    this.table.renderRows();
+  }
 
   showDetails(id: string): void {
     const selectedRequest = this.requests.find(req => req.id == id);
@@ -94,11 +100,15 @@ export class ViewRequestsComponent implements OnInit {
 
 export class RequestDetailDialog {
   remarks: string;
+  isLoggedIn = false;
 
   constructor(
     public dialogRef: MatDialogRef<RequestDetailDialog>,
+    private userService: UserService,
     @Inject(MAT_DIALOG_DATA) public request: BaseRequest,
-  ) { }
+  ) {
+    this.isLoggedIn = userService.currentUser != null;
+  }
 
   onCloseClick(): void {
     this.dialogRef.close();
