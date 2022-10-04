@@ -33,6 +33,7 @@ export interface Volunteer extends BaseUser {
 }
 
 export type CreateUser<UserType = BaseUser> = Omit<UserType, 'id' | 'type'>
+export type UserLogin = Pick<User, 'username' | 'password'>
 
 export function isAdmin(user: User): user is SchoolAdmin {
   return user.type === UserType.SchoolAdmin
