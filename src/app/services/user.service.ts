@@ -49,10 +49,12 @@ export class UserService {
       user => user.username === username && user.password === password
     )
 
-    this.authEvent.emit({
-      type: 'login',
-      data: this._currentUser
-    })
+    if (this._currentUser) {
+      this.authEvent.emit({
+        type: 'login',
+        data: this._currentUser
+      })
+    }
 
     return this._currentUser
   }
@@ -60,6 +62,12 @@ export class UserService {
   logout() {
     const user = this._currentUser
     this._currentUser = undefined
+
+    this.authEvent.emit({
+      type: 'logout',
+      data: user
+    })
+
     return user
   }
 }
