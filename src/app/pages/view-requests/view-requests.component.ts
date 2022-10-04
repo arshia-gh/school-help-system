@@ -26,6 +26,7 @@ export class ViewRequestsComponent implements OnInit {
     private requestService: RequestService,
     private schoolService: SchoolService,
     private dialog: MatDialog,
+    private userService: UserService,
     private _snackBar: MatSnackBar
   ) {
   };
@@ -89,7 +90,6 @@ export class ViewRequestsComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }
 
 @Component({
@@ -108,6 +108,10 @@ export class RequestDetailDialog {
     @Inject(MAT_DIALOG_DATA) public request: BaseRequest,
   ) {
     this.isLoggedIn = userService.currentUser != null;
+
+    this.userService.authEvent.subscribe((e) => {
+      this.isLoggedIn = e.type === 'login';
+    })
   }
 
   onCloseClick(): void {

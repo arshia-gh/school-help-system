@@ -3,7 +3,6 @@ import { RequestService } from "./request.service";
 import { UserService } from "./user.service";
 import { CreateOffer, Offer } from "../interfaces/Offer.interface";
 import { v4 as uuid } from 'uuid';
-import { faker } from "@faker-js/faker";
 
 @Injectable({
   providedIn: 'root'
