@@ -1,6 +1,14 @@
 <mat-toolbar fxLayout="row" fxLayoutGap="12px" color="primary">
-  <img src="/assets/school_help_logo.png" width="50" height="50"  routerLink="/" role="button"/>
+  <img src="/assets/school_help_logo.png" width="50" height="50" routerLink="/" role="button" />
   <span routerLink="/" role="button" fxFlex>SchoolHELP</span>
-  <a mat-raised-button routerLink="requests" color="accent" >View Requests</a>
-  <a mat-raised-button routerLink="signup" color="accent">signup (temp)</a>
+  <a mat-raised-button routerLink="requests" color="accent">View Requests</a>
+
+  <ng-template [ngIf]="isLoggedIn" [ngIfElse]="loggedOut">
+    <a mat-raised-button (click)="logout()" color="accent">Logout</a>
+  </ng-template>
+
+  <ng-template #loggedOut>
+    <a mat-raised-button routerLink="signup" color="accent">Sign Up</a>
+    <a mat-raised-button routerLink="login" color="accent">Login</a>
+  </ng-template>
 </mat-toolbar>

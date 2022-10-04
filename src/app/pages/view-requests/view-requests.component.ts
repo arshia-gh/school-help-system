@@ -6,6 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { SchoolService } from 'src/app/services/school.service';
 import { UserService } from 'src/app/services/user.service';
+import { OfferService } from 'src/app/services/offer.service';
+import { Volunteer } from 'src/app/interfaces/User.interface';
 
 @Component({
   selector: 'app-view-requests',
@@ -27,6 +29,7 @@ export class ViewRequestsComponent implements OnInit {
     private schoolService: SchoolService,
     private dialog: MatDialog,
     private userService: UserService,
+    private offerService: OfferService,
     private _snackBar: MatSnackBar
   ) {
   };
@@ -78,12 +81,21 @@ export class ViewRequestsComponent implements OnInit {
       data: selectedRequest,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != undefined) {
+    dialogRef.afterClosed().subscribe(remarks => {
+      if (remarks != undefined) {
+        //add to offers
+        const newOffer = this.offerService.addOffer({
+          remarks:remarks,
+          request: selectedRequest,
+          volunteer: this.userService.currentUser as Volunteer,
+        });
+
+        selectedRequest.offers.push(newOffer);
+
         this._snackBar.open(
           `Offer Submitted Successfully`,
           'OK', { duration: 2000 }
-        )
+        );
       }
     });
   }

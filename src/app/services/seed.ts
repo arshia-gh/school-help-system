@@ -124,9 +124,9 @@ export const requests: Request[] = [
 export const users: User[] = [
   {
       id: '80ce5f0c-a76b-42ce-8e56-d9d0e49e06ce',
-      username: 'johndoe',
+      username: 'teacher',
       password: '12345678',
-      email: 'john@gmail.com',
+      email: 'teacher@gmail.com',
       phoneNo: '012-41242553',
       fullname: 'John Doe',
       position: 'Teacher',
@@ -136,9 +136,9 @@ export const users: User[] = [
   },
   {
     id: 'c0cdbd5b-5963-4aac-bcc2-6336392f7b63',
-    username: 'kaine',
+    username: 'volunteer',
     password: '12345678',
-    email: 'kaine@gmail.com',
+    email: 'volunteer@gmail.com',
     phoneNo: '012-41242553',
     fullname: 'Kain Elain',
     occupation: 'Teacher',

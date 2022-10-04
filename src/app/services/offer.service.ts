@@ -21,9 +21,12 @@ export class OfferService {
   }
 
   addOffer(offer: CreateOffer) {
-    this._offers.push({
+    const newOffer: Offer = {
       ...offer,
       id: uuid(),
-    })
+    }
+
+    this._offers.push(newOffer);
+    return newOffer;
   }
 }

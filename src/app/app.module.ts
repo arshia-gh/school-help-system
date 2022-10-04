@@ -25,9 +25,11 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { ViewRequestsComponent, RequestDetailDialog } from './pages/view-requests/view-requests.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { LoginFormComponent } from './forms/login-form/login-form.component';
+import { LoginComponent } from './pages/login/login.component';
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpComponent },
   { path: 'requests', component: ViewRequestsComponent },
 ]
@@ -44,7 +46,8 @@ const appRoutes: Routes = [
     ViewRequestsComponent,
     RequestDetailDialog,
     SignUpComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
