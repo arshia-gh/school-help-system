@@ -1,6 +1,7 @@
 import { Offer } from "./Offer.interface"
 import type { School } from "./School.interface"
 
+
 export enum UserType {
   SchoolAdmin = 'SchoolAdmin',
   Volunteer = 'Volunteer',
@@ -29,7 +30,7 @@ export interface SchoolAdmin extends BaseUser {
 
 export interface Volunteer extends BaseUser {
   occupation: string
-  dob: Date
+  dob: string
   type: UserType.Volunteer
   offers: Offer[];
 }

@@ -1,5 +1,31 @@
 import { FormControl, FormGroup, ValidationErrors, ValidatorFn} from '@angular/forms';
 import { Validators } from "@angular/forms";
+import { phone } from 'phone'
+
+const required = (control: FormControl) => {
+  if (!control.value || typeof control.value === 'string' && !control.value.trim()) {
+    return {
+      required: true
+    }
+  }
+  return null
+}
+
+/**
+ * Iterates through the given form group and touches all the fields,
+ * including nested fields.
+ * @param formGroup form group to touch its immediate and nested controls
+ */
+export const touchFormFields = (formGroup: FormGroup) => {
+  Object.keys(formGroup.controls).forEach(field => {
+    const control = formGroup.get(field)
+    if (control instanceof FormControl) {
+      control.markAsTouched({ onlySelf: true })
+    } else if (control instanceof FormGroup) {
+      touchFormFields(control)
+    }
+  });
+}
 
 const required = (control: FormControl) => {
   if (!control.value || typeof control.value === 'string' && !control.value.trim()) {
@@ -37,10 +63,10 @@ const helper = (
     }
   }
 
-export const Required = (name: string) =>
+export const Required = (name: string, trimWhiteSpace = true) =>
   helper(
-    err => `${name} is required`,
-    Validators.required
+    () => `${name} is required`,
+    trimWhiteSpace ? required : Validators.required
   )
 
 export const MaxLength = (maxLength: number, name: string) =>
@@ -55,10 +81,37 @@ export const MinLength = (minLength: number, name: string) =>
     Validators.minLength(minLength),
   )
 
-export const RangeLength = (minLength: number, maxLength: number, name: string) => [
+export const Email = helper(
+  () => `Email is not a valid email`,
+  Validators.email,
+)
+
+
+export const Pattern = (pattern: RegExp, msg: string, name: string) =>
+  helper(
+    () => `${name} is not valid, ${msg}`,
+    Validators.pattern(pattern)
+  )
+
+
+export const RangeLength = (
+  minLength: number, maxLength: number,
+  name: string
+  ) => [
     MinLength(minLength, name),
     MaxLength(maxLength, name),
 ]
 
+// export const Phone = (name: string) =>
+//   helper(
+//     () =>,
+//     (control) => phone(control.value, { country: 'MY' })
+//   )
+
+export const REmail = [Required('Email'), Email]
+
 export const RRangeLength: typeof RangeLength = (...args) =>
   [Required(args[2]), ...RangeLength(...args)]
+
+export const Compose = (...validators: (ValidatorFn | ValidatorFn[])[]) =>
+  validators.flatMap(v => v)

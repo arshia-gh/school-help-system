@@ -3,14 +3,13 @@ import { NonNullableFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { isAdmin, UserLogin } from 'src/app/interfaces/User.interface';
 import { UserService } from 'src/app/services/user.service';
-import { Required } from 'src/utils/form-utils';
+import { Required, touchFormFields } from 'src/utils/form-utils';
 import { FormStruct } from 'src/utils/ts-utils';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login-form',
   template: `
-    <style></style>
     <form [formGroup]="form" fxLayout="column">
       <mat-form-field gdArea="schoolName" appearance="outline" color="primary">
         <mat-label>Username</mat-label>
@@ -22,16 +21,24 @@ import { MatSnackBar } from '@angular/material/snack-bar';
         <input matInput [formControl]="password" type="password">
         <mat-error validation-error [control]="password"></mat-error>
       </mat-form-field>
+      <button mat-raised-button class="w-100 mt-2" color="primary" (click)="submitHandler()">
+        Login
+      </button>
     </form>
   `,
 })
 export class LoginFormComponent {
   form: FormStruct<UserLogin>
 
-  constructor(private userService: UserService, fb: NonNullableFormBuilder, private router: Router, private _snackBar: MatSnackBar) {
+  constructor(
+    fb: NonNullableFormBuilder,
+    private _userService: UserService,
+    private _router: Router,
+    private _snackBar: MatSnackBar,
+  ) {
     this.form = fb.group({
       username: ['', Required('username')],
-      password: ['', Required('password')],
+      password: ['', Required('password', false)],
     })
   }
 
@@ -44,17 +51,16 @@ export class LoginFormComponent {
   }
 
   submitHandler() {
+    if (this.form.invalid) return touchFormFields(this.form)
 
     const { username, password } = this.form.value
-    const user = this.userService.login(username, password)
+    const user = this._userService.login(username, password)
 
-    if (user != null) {
-      this.router.navigate((isAdmin(user) ? ['/dashboard'] : ['/requests']))
-    }
-    else {
+    if (!user) {
       this._snackBar.open('Incorrect username or password', null, {
         duration: 3000,
-      });
+      })
+      this.form.reset()
     }
   }
 }
