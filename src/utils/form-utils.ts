@@ -1,31 +1,5 @@
 import { FormControl, FormGroup, ValidationErrors, ValidatorFn} from '@angular/forms';
 import { Validators } from "@angular/forms";
-import { phone } from 'phone'
-
-const required = (control: FormControl) => {
-  if (!control.value || typeof control.value === 'string' && !control.value.trim()) {
-    return {
-      required: true
-    }
-  }
-  return null
-}
-
-/**
- * Iterates through the given form group and touches all the fields,
- * including nested fields.
- * @param formGroup form group to touch its immediate and nested controls
- */
-export const touchFormFields = (formGroup: FormGroup) => {
-  Object.keys(formGroup.controls).forEach(field => {
-    const control = formGroup.get(field)
-    if (control instanceof FormControl) {
-      control.markAsTouched({ onlySelf: true })
-    } else if (control instanceof FormGroup) {
-      touchFormFields(control)
-    }
-  });
-}
 
 const required = (control: FormControl) => {
   if (!control.value || typeof control.value === 'string' && !control.value.trim()) {
