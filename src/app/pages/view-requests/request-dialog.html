@@ -46,7 +46,7 @@
 
   <ng-template #loggedOut fxLayout="column">
     <h2 class="mat-h2"> Kindly login to submit offer </h2>
-    <button mat-raised-button color="primary">Login</button>
+    <button mat-raised-button color="primary" routerLink="/auth/login" (click)="onCloseClick()">Login</button>
   </ng-template>
 </div>
 

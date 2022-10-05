@@ -40,7 +40,7 @@ export const requests: Request[] = [
   {
     id: '17664cd3-a4d3-4a96-80d1-f76b432051a6',
     description: 'need more mobile device',
-    requestDate: new Date(2022, 9, 20),
+    requestDate: new Date(2022, 8, 20),
     school: schools[0],
     numRequired: 10,
     resourceType: ResourceType.MobileDevice,
@@ -50,7 +50,7 @@ export const requests: Request[] = [
   {
     id: '5f704187-4423-4dd3-a5ca-292c5c4a16e1',
     description: 'Advanced teacher needed for History class.',
-    requestDate: new Date(2022, 9, 1),
+    requestDate: new Date(2022, 9, 6),
     school: schools[0],
     numOfStudent: 10,
     studentLevel: StudentLevel.Advanced,
@@ -71,7 +71,7 @@ export const requests: Request[] = [
   {
     id: 'aefb7fd0-806b-4917-a6b3-2ffabcb8eeff',
     description: 'I need help tomorrow',
-    requestDate: new Date(2022, 9, 13),
+    requestDate: new Date(2022, 9, 5),
     school: schools[1],
     numRequired: 5,
     resourceType: ResourceType.NetworkingEquipment,
@@ -91,7 +91,7 @@ export const requests: Request[] = [
   {
     id: '9dc17073-c942-4f74-8568-2d2e31991a0c',
     description: 'Chinese teacher required',
-    requestDate: new Date(2022, 9, 15 ),
+    requestDate: new Date(2022, 6, 15 ),
     school: schools[1],
     numOfStudent: 10,
     studentLevel: StudentLevel.Intermediate,
@@ -125,9 +125,9 @@ export const requests: Request[] = [
 export const users: User[] = [
   {
       id: '80ce5f0c-a76b-42ce-8e56-d9d0e49e06ce',
-      username: 'teacher',
+      username: 'admin',
       password: '12345678',
-      email: 'teacher@gmail.com',
+      email: 'admin@gmail.com',
       phoneNo: '012-41242553',
       fullname: 'John Doe',
       position: 'Teacher',
@@ -137,7 +137,7 @@ export const users: User[] = [
   },
   {
     id: 'c0cdbd5b-5963-4aac-bcc2-6336392f7b63',
-    username: 'volunteer',
+    username: 'vol',
     password: '12345678',
     email: 'volunteer@gmail.com',
     phoneNo: '012-41242553',

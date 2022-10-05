@@ -21,7 +21,7 @@ export class UserService {
   private _commonFields: ['username', 'password', 'email'] = ['username', 'password', 'email']
   public authEvent = new EventEmitter<AuthEvent>()
 
-  constructor(private _router: Router, private _snackBar: MatSnackBar) {}
+  constructor(private _router: Router, private _snackBar: MatSnackBar) { }
 
   get users() {
     return this._users
@@ -29,6 +29,20 @@ export class UserService {
 
   get currentUser() {
     return this._currentUser
+  }
+
+  updateAdmin(admin: SchoolAdmin): void {
+    const userId = this.currentUser.id;
+
+    if (!userId) throw new Error('User is not logged in');
+
+    const index = users.findIndex(u => u.id === userId);
+    users[index] = admin;
+    this._currentUser = admin;
+    this.authEvent.emit({
+      type: 'login',
+      data: this._currentUser
+    })
   }
 
   addSchoolAdmin(schoolAdmin: CreateUser<SchoolAdmin>, school: School) {
@@ -44,7 +58,7 @@ export class UserService {
   }
 
   addVolunteer(volunteer: CreateUser<Volunteer>) {
-    const newVolunteer ={
+    const newVolunteer = {
       ...volunteer,
       id: uuid(),
       type: UserType.Volunteer,
@@ -65,7 +79,14 @@ export class UserService {
         type: 'login',
         data: this._currentUser
       })
-      this._router.navigate((isAdmin(this._currentUser) ? ['/dashboard'] : ['/requests']))
+
+      const destination = isAdmin(this._currentUser) ? 'dashboard' : 'requests';
+      this._router.navigate(['/' + destination])
+      this._snackBar.open(`Login Successful. Redirected you to view ${destination}`, 'OK', {
+        duration: 3000,
+        verticalPosition: 'top',
+        politeness: 'polite'
+      });
     }
 
     return this._currentUser

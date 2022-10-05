@@ -22,6 +22,7 @@ import { VolunteerSignUpFormComponent } from './forms/volunteer-sign-up-form/vol
 import { AdminSignUpFormComponent } from './forms/admin-sign-up-form/admin-sign-up-form.component';
 import { LoginPageComponent } from './pages/login-page.component';
 import { TrimTransformDirective } from './directives/trim-transform.directive';
+import { ManageProfileComponent } from './pages/manage-profile/manage-profile.component';
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -35,6 +36,7 @@ const appRoutes: Routes = [
   },
   { path: 'dashboard', component: DashboardLayoutComponent},
   { path: 'requests', component: ViewRequestsComponent },
+  { path: 'profile', component: ManageProfileComponent },
 ]
 
 @NgModule({
@@ -64,6 +66,7 @@ const appRoutes: Routes = [
 
     // directives
     TrimTransformDirective,
+      ManageProfileComponent,
   ],
   imports: [
     BrowserModule,
