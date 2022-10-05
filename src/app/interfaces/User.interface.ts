@@ -1,3 +1,4 @@
+import { Offer } from "./Offer.interface"
 import type { School } from "./School.interface"
 
 
@@ -31,9 +32,10 @@ export interface Volunteer extends BaseUser {
   occupation: string
   dob: string
   type: UserType.Volunteer
+  offers: Offer[];
 }
 
-export type CreateUser<UserType = BaseUser> = Omit<UserType, 'id' | 'school' | 'type'>
+export type CreateUser<UserType = BaseUser> = Omit<UserType, 'id' | 'school' | 'type' | 'offers'>
 export type UserLogin = Pick<User, 'username' | 'password'>
 
 export function isAdmin(user: User): user is SchoolAdmin {

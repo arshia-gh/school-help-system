@@ -29,6 +29,7 @@ import { ViewSchoolRequestPageComponent } from './pages/view-school-requests-pag
 import { CreateRequestDialog } from './pages/view-school-requests-page/create-request-dialog/create-request-dialog.component';
 import { CreateRequestFormComponent } from './forms/create-request-form/create-request-form.component';
 import { OfferDetailDialog, ViewOffersPageComponent } from './pages/view-offers-page/view-offers-page.component';
+import { ManageProfileComponent } from './pages/manage-profile/manage-profile.component';
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -47,13 +48,14 @@ const appRoutes: Routes = [
     path: 'auth',
     component: AuthLayoutComponent,
     children: [
-      { path: 'signup', component: SignUpPageComponent, title: 'SignUp'},
+      { path: 'signup', component: SignUpPageComponent, title: 'SignUp' },
       { path: 'login', component: LoginPageComponent, title: 'Login' },
     ]
   },
-  { path: 'dashboard', component: DashboardLayoutComponent},
+  { path: 'dashboard', component: DashboardLayoutComponent },
   { path: 'requests', component: ViewRequestsComponent },
   { path: 'offers/:requestId', component: ViewOffersPageComponent },
+  { path: 'profile', component: ManageProfileComponent },
 ]
 
 @NgModule({
@@ -89,6 +91,7 @@ const appRoutes: Routes = [
     // directives
     TrimTransformDirective,
     ViewOffersPageComponent,
+    ManageProfileComponent,
   ],
   imports: [
     BrowserModule,

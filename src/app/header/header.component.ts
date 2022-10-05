@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit {
 
     this.userService.authEvent.subscribe((e) => {
       this.isLoggedIn = e.type === 'login';
+      this.currentUser = e.data;
     })
   }
 

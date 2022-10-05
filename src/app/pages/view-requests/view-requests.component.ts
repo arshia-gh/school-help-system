@@ -7,7 +7,7 @@ import { MatTable } from '@angular/material/table';
 import { SchoolService } from 'src/app/services/school.service';
 import { UserService } from 'src/app/services/user.service';
 import { OfferService } from 'src/app/services/offer.service';
-import { UserType, Volunteer } from 'src/app/interfaces/User.interface';
+import { User, UserType, Volunteer } from 'src/app/interfaces/User.interface';
 
 @Component({
   selector: 'app-view-requests',
@@ -23,6 +23,7 @@ export class ViewRequestsComponent implements OnInit {
   source = this.requestService.requests;
   requests = this.source;
   displayedColumns: string[] = ['id', 'description', 'requestDate', 'city', 'schoolName'];
+  currentUser: User;
 
   constructor(
     private requestService: RequestService,
@@ -87,10 +88,12 @@ export class ViewRequestsComponent implements OnInit {
         const newOffer = this.offerService.addOffer({
           remarks:remarks,
           request: selectedRequest,
-          volunteer: this.userService.currentUser as Volunteer,
+          volunteer: this.currentUser as Volunteer,
         });
 
+        const volunteer = this.currentUser as Volunteer;
         selectedRequest.offers.push(newOffer);
+        volunteer.offers.push(newOffer);
 
         this._snackBar.open(
           `Offer Submitted Successfully`,

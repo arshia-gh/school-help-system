@@ -1,6 +1,5 @@
 import { FormControl, FormGroup, ValidationErrors, ValidatorFn} from '@angular/forms';
 import { Validators } from "@angular/forms";
-import { phone } from 'phone'
 
 const required = (control: FormControl) => {
   if (!control.value || typeof control.value === 'string' && !control.value.trim()) {
