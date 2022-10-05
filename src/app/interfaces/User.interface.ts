@@ -1,5 +1,6 @@
 import type { School } from "./School.interface"
 
+
 export enum UserType {
   SchoolAdmin = 'SchoolAdmin',
   Volunteer = 'Volunteer',
@@ -28,11 +29,11 @@ export interface SchoolAdmin extends BaseUser {
 
 export interface Volunteer extends BaseUser {
   occupation: string
-  dob: Date
+  dob: string
   type: UserType.Volunteer
 }
 
-export type CreateUser<UserType = BaseUser> = Omit<UserType, 'id' | 'type'>
+export type CreateUser<UserType = BaseUser> = Omit<UserType, 'id' | 'school' | 'type'>
 export type UserLogin = Pick<User, 'username' | 'password'>
 
 export function isAdmin(user: User): user is SchoolAdmin {

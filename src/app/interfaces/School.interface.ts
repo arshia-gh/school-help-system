@@ -13,4 +13,4 @@ export interface School {
   requests: Request[]
 }
 
-export type CreateSchool = Omit<School, 'id'>
+export type CreateSchool = Omit<School, 'id' | 'requests'>

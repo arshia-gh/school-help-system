@@ -1,3 +1,4 @@
+import { formatDate } from "@angular/common"
 import { Request, RequestType, ResourceType, StudentLevel } from "../interfaces/Request.interface"
 import { School } from "../interfaces/School.interface"
 import { User, UserType } from "../interfaces/User.interface"
@@ -142,7 +143,7 @@ export const users: User[] = [
     phoneNo: '012-41242553',
     fullname: 'Kain Elain',
     occupation: 'Teacher',
-    dob: new Date(2000, 1, 1),
+    dob: '01/01/2000',
     type: UserType.Volunteer,
   }
 ]

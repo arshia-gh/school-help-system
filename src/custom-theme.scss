@@ -4,6 +4,8 @@
 @use '@angular/material' as mat;
 // Plus imports for other components in your app.
 
+@import '~@angular/material/theming';
+
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
@@ -12,22 +14,38 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$school-help-system-primary: mat.define-palette(mat.$blue-grey-palette, 900, 300);
-$school-help-system-accent: mat.define-palette(mat.$brown-palette, 400, 50);
-$school-help-system-warn: mat.define-palette(mat.$orange-palette, A700, A400);
+$app-primary: mat.define-palette(mat.$blue-grey-palette, 900, 300);
+$app-accent: mat.define-palette(mat.$brown-palette, 400, 50);
+$app-warn: mat.define-palette(mat.$orange-palette, A700, A400);
+$app-success: mat.define-palette(mat.$green-palette, A700, A400);
+
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$school-help-system-theme: mat.define-light-theme((
+$app-theme: mat.define-light-theme((
   color: (
-    primary: $school-help-system-primary,
-    accent: $school-help-system-accent,
-    warn: $school-help-system-warn,
+    primary: $app-primary,
+    accent: $app-accent,
+    warn: $app-warn,
+    // success: $app-success,
   )
 ));
+
+@include angular-material-theme($app-theme);
+$primary: map-get($app-theme, primary);
+$accent: map-get($app-theme, accent);
+$warn: map-get($app-theme, warn);
+$success: map-get($app-theme, success);
+
+:root {
+  --color-primary: #{mat-color($app-primary)};
+  --color-accent: #{mat-color($app-accent)};
+  --color-warn: #{mat-color($app-warn)};
+  --color-success: #{mat-color($app-success)};
+}
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($school-help-system-theme);
+@include mat.all-component-themes($app-theme);
 

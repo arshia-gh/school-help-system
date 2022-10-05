@@ -1,8 +1,6 @@
 import { Injectable } from "@angular/core";
 import { CreateSchool, School } from "../interfaces/School.interface";
 import { v4 as uuid } from "uuid";
-import { UserService } from "./user.service";
-import { RequestService } from "./request.service";
 import { schools } from "./seed";
 
 @Injectable({
@@ -19,9 +17,12 @@ export class SchoolService {
   }
 
   addSchool(school: CreateSchool) {
-    return this._schools.push({
+    this._schools.push({
       ...school,
       id: uuid(),
+      requests: [],
     })
+
+    return this._schools[this._schools.length - 1]
   }
 }

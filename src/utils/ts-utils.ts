@@ -1,5 +1,5 @@
-import type { FormControl, FormGroup } from "@angular/forms";
+import type { FormControl, FormGroup, ValidatorFn } from "@angular/forms";
 
-export type FormStruct<T, IsNullable extends boolean = false> = T extends object ? FormGroup<
-  { [Prop in keyof T]: FormStruct<T[Prop], IsNullable> }
-> : FormControl<IsNullable extends true ? T | null : T>
+export type FormStruct<T> = T extends object ? FormGroup<
+  { [Prop in keyof T]: FormStruct<T[Prop]> }
+> : FormControl<T>
