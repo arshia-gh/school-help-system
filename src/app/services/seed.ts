@@ -144,5 +144,6 @@ export const users: User[] = [
     occupation: 'Teacher',
     dob: new Date(2000, 1, 1),
     type: UserType.Volunteer,
+    offers: [],
   }
 ]

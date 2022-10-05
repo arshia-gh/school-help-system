@@ -37,11 +37,15 @@ export class UserService {
   }
 
   addVolunteer(volunteer: CreateUser<Volunteer>) {
-    return this._users.push({
+    const newVolunteer ={
       ...volunteer,
       id: uuid(),
-      type: UserType.Volunteer
-    })
+      type: UserType.Volunteer,
+    }
+
+    this._users.push(newVolunteer as User)
+    this.login(newVolunteer.username, newVolunteer.password)
+    return newVolunteer
   }
 
   login(username: string, password: string) {

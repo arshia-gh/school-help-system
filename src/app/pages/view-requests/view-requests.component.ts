@@ -90,7 +90,9 @@ export class ViewRequestsComponent implements OnInit {
           volunteer: this.userService.currentUser as Volunteer,
         });
 
+        const user = this.userService.currentUser as Volunteer;
         selectedRequest.offers.push(newOffer);
+        user.offers.push(newOffer);
 
         this._snackBar.open(
           `Offer Submitted Successfully`,
