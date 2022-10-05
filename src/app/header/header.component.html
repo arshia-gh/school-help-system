@@ -5,6 +5,7 @@
 
   <ng-template [ngIf]="isLoggedIn" [ngIfElse]="loggedOut">
     <a mat-raised-button (click)="logout()" color="accent">Logout</a>
+    <a mat-raised-button routerLink="/dashboard" color="accent">Dashboard</a>
   </ng-template>
 
   <ng-template #loggedOut>

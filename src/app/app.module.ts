@@ -28,7 +28,7 @@ import { TrimTransformDirective } from './directives/trim-transform.directive';
 import { ViewSchoolRequestPageComponent } from './pages/view-school-requests-page/view-school-request-page.component';
 import { CreateRequestDialog } from './pages/view-school-requests-page/create-request-dialog/create-request-dialog.component';
 import { CreateRequestFormComponent } from './forms/create-request-form/create-request-form.component';
-import { ViewOffersPageComponent } from './pages/view-offers-page/view-offers-page.component';
+import { OfferDetailDialog, ViewOffersPageComponent } from './pages/view-offers-page/view-offers-page.component';
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -67,6 +67,7 @@ const appRoutes: Routes = [
     RequestDetailDialog,
     ViewRequestDetailDialog,
     CreateRequestDialog,
+    OfferDetailDialog,
 
     // layout components
     DashboardLayoutComponent,
@@ -87,7 +88,7 @@ const appRoutes: Routes = [
 
     // directives
     TrimTransformDirective,
-      ViewOffersPageComponent,
+    ViewOffersPageComponent,
   ],
   imports: [
     BrowserModule,

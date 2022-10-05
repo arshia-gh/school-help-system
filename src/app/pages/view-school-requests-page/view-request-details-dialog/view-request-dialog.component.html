@@ -7,7 +7,6 @@
     <mat-grid-tile>{{request.id}}</mat-grid-tile>
 
     <mat-grid-tile>Proposed Date </mat-grid-tile>
-    {{$any(request).proposedDateTime | json}}
     <mat-grid-tile>{{$any(request).proposedDateTime | date : 'dd/MM/yyyy hh:mm aa'}}</mat-grid-tile>
 
     <mat-grid-tile>Student Level</mat-grid-tile>

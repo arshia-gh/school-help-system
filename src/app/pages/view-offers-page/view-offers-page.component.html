@@ -2,9 +2,9 @@
 <div class="container my-3">
   <h1>Request ID: {{request.id}}</h1>
   <h2>Description</h2>
-  <h4>{{request.description}}</h4>
+  <p>{{request.description}}</p>
   <div fxLayout="column" class="mat-elevation-z5">
-    <table #table mat-table [dataSource]="request.offers" class="w-100" style="height: 60vh;">
+    <table #table mat-table [dataSource]="request.offers" class="w-100">
 
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> Request ID </th>

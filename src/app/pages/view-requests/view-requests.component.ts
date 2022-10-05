@@ -7,7 +7,7 @@ import { MatTable } from '@angular/material/table';
 import { SchoolService } from 'src/app/services/school.service';
 import { UserService } from 'src/app/services/user.service';
 import { OfferService } from 'src/app/services/offer.service';
-import { Volunteer } from 'src/app/interfaces/User.interface';
+import { UserType, Volunteer } from 'src/app/interfaces/User.interface';
 
 @Component({
   selector: 'app-view-requests',
@@ -75,7 +75,7 @@ export class ViewRequestsComponent implements OnInit {
   }
 
   showDetails(id: string): void {
-    const selectedRequest = this.requests.find(req => req.id == id);
+    const selectedRequest = this.requestService.getById(id);
     const dialogRef = this.dialog.open(RequestDetailDialog, {
       width: '600px',
       data: selectedRequest,
@@ -113,13 +113,16 @@ export class ViewRequestsComponent implements OnInit {
 export class RequestDetailDialog {
   remarks: string;
   isLoggedIn = false;
+  isVolunteer: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<RequestDetailDialog>,
     private userService: UserService,
     @Inject(MAT_DIALOG_DATA) public request: BaseRequest,
   ) {
+
     this.isLoggedIn = userService.currentUser != null;
+    this.isVolunteer = this.isLoggedIn && userService.currentUser.type === UserType.Volunteer;
 
     this.userService.authEvent.subscribe((e) => {
       this.isLoggedIn = e.type === 'login';

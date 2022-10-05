@@ -2,8 +2,9 @@ import type { Request } from "./Request.interface";
 import type { Volunteer } from "./User.interface";
 
 export enum OfferStatus {
-  Pending = 'PENDING',
-  Accepted = 'ACCEPTED'
+  Pending = 'Pending',
+  Accepted = 'Accepted',
+  Rejected = 'Rejected',
 }
 export interface Offer {
   id: string

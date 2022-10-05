@@ -7,7 +7,7 @@ import { RequestService } from "@app/services/request.service";
 import { UserService } from "@app/services/user.service";
 import { Required, RRange, RRangeLength, touchFormFields } from "src/utils/form-utils";
 import { FormStruct } from "src/utils/ts-utils";
-import * as dayjs from 'dayjs'
+import { DayJsService } from "@app/services/dayjs.service";
 
 enum SelectedForm {
   TutorialForm = 0,
@@ -17,95 +17,28 @@ enum SelectedForm {
 type TutorialFormFields = Omit<
   CreateRequest<Tutorial>, 'studentLevel' | 'proposedDateTime'
 > & { studentLevel: string, proposedDate: Date, proposedTime: Date }
+type ResourceFormFields = Omit<CreateRequest<Resource>, 'resourceType'> & { resourceType: string}
 
 @Component({
   selector: 'app-create-request-form',
-  template: `
-  <mat-tab-group mat-stretch-tabs (selectedIndexChange)="formSelected()">
-    <mat-tab label="Tutorial">
-      <form [formGroup]="tutorialForm" class="mt-4">
-        <div
-          gdAreas="proposedDate proposedTime  | numOfStudent studentLevel | description description"
-          gdGap="0.75rem" gdRows="auto auto"
-        >
-          <mat-form-field appearance="outline" gdArea="proposedDate">
-            <mat-label>Proposed Date</mat-label>
-            <input matInput [formControl]="tutorial.proposedDate" [matDatepicker]="picker">
-            <mat-error validation-error [control]="tutorial.proposedDate"></mat-error>
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field gdArea="proposedTime" appearance="outline" color="primary">
-            <mat-label>Proposed Time</mat-label>
-            <input type="time" matInput [formControl]="tutorial.proposedTime">
-            <mat-error validation-error [control]="tutorial.proposedTime"></mat-error>
-          </mat-form-field>
-          <mat-form-field gdArea="numOfStudent" appearance="outline" color="primary">
-            <mat-label>Number of students</mat-label>
-            <input matInput [formControl]="tutorial.numOfStudent">
-            <mat-error validation-error [control]="tutorial.numOfStudent"></mat-error>
-          </mat-form-field>
-          <mat-form-field gdArea="description" appearance="outline" color="primary">
-            <mat-label>Description</mat-label>
-            <textarea matInput [formControl]="tutorial.description"></textarea>
-            <mat-error validation-error [control]="tutorial.description"></mat-error>
-          </mat-form-field>
-          <mat-form-field gdArea="studentLevel" appearance="outline">
-            <mat-label>Student Level</mat-label>
-            <mat-select [formControl]="tutorial.studentLevel">
-              <mat-option value="Advanced">Advanced</mat-option>
-              <mat-option value="Intermediate">Intermediate</mat-option>
-              <mat-option value="Beginner" selected>Beginner</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </form>
-    </mat-tab>
-    <mat-tab label="Resource">
-      <form [formGroup]="resourceForm" class="mt-4">
-        <div
-          gdAreas="resourceType numRequired | description description"
-          gdGap="0.75rem" gdRows="auto auto"
-        >
-          <mat-form-field gdArea="resourceType" appearance="outline">
-            <mat-label>Resource Type</mat-label>
-            <mat-select [formControl]="resource.resourceType">
-              <mat-option value="MobileDevice">Mobile Device</mat-option>
-              <mat-option value="PersonalComputer">Personal Computer</mat-option>
-              <mat-option value="NetworkingEquipment">Networking Equipment</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field gdArea="numRequired" appearance="outline" color="primary">
-            <mat-label>Number Required</mat-label>
-            <input matInput [formControl]="resource.numRequired">
-            <mat-error validation-error [control]="resource.numRequired"></mat-error>
-          </mat-form-field>
-          <mat-form-field gdArea="description" appearance="outline" color="primary">
-            <mat-label>Description</mat-label>
-            <textarea matInput [formControl]="resource.description"></textarea>
-            <mat-error validation-error [control]="resource.description"></mat-error>
-          </mat-form-field>
-        </div>
-      </form>
-    </mat-tab>
-  </mat-tab-group>
-  <button mat-raised-button color="primary" class="d-block w-100 mt-3" (click)="requestSubmitted()">
-    Submit Request
-  </button>
-  `
+  templateUrl: './create-request-form.component.html'
 })
 export class CreateRequestFormComponent {
   @ViewChild(MatTabGroup) private _tabGroup: MatTabGroup
   @Output() formSubmitted = new EventEmitter()
 
   tutorialForm: FormStruct<TutorialFormFields>
-  resourceForm: FormStruct<Omit<CreateRequest<Resource>, 'resourceType'> & { resourceType: string}>
+  resourceForm: FormStruct<ResourceFormFields>
   user: SchoolAdmin
 
-  constructor(private _requestService: RequestService, private _userService: UserService, fb: NonNullableFormBuilder) {
+  constructor(
+    private _requestService: RequestService,
+    private _userService: UserService,
+    private _dayjs: DayJsService,
+    fb: NonNullableFormBuilder
+  ) {
     this.tutorialForm = fb.group({
-      description: ['', RRangeLength(6, 255, 'Description')],
+      description:  ['', RRangeLength(6, 255, 'Description')],
       numOfStudent: [1, RRange(1, 60, 'Number of students')],
       proposedDate: ['', [Required('Tutorial date')]],
       proposedTime: ['', [Required('Tutorial time')]],
@@ -136,10 +69,10 @@ export class CreateRequestFormComponent {
 
     const { proposedDate, proposedTime, ...tutorial } = this.tutorialForm.getRawValue()
 
-    const parsedTime = dayjs(proposedTime)
-    const proposedDateTime = dayjs(proposedDate)
-      .set('hours', parsedTime.hour())
-      .set('minutes', parsedTime.minute())
+    const parsedTime = this._dayjs.parse('09:10', 'HH:mm')
+    const proposedDateTime = this._dayjs.parse(proposedDate)
+      .set('hour', parsedTime.get('hour'))
+      .set('minute', parsedTime.get('minute'))
       .toDate()
 
     this._requestService.addTutorial(
@@ -150,8 +83,6 @@ export class CreateRequestFormComponent {
       },
       this.user.school
     )
-
-    console.log(this._requestService);
 
     this.formSubmitted.emit()
   }

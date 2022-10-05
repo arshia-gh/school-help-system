@@ -1,0 +1,57 @@
+<h1 mat-dialog-title>Offer</h1>
+<mat-divider></mat-divider>
+<div fxLayout="column" fxLayoutAlign="center stretch">
+  <mat-grid-list cols="2" rowHeight="50px">
+    <mat-grid-tile>Offer ID</mat-grid-tile>
+    <mat-grid-tile>{{offer.id}}</mat-grid-tile>
+
+    <mat-grid-tile>Offered Date </mat-grid-tile>
+    <mat-grid-tile>{{offer.dateOffered | date : 'dd/MM/yyyy hh:mm aa'}}</mat-grid-tile>
+
+    <mat-grid-tile>Offer Remarks</mat-grid-tile>
+    <mat-grid-tile>{{offer.remarks}}</mat-grid-tile>
+
+    <mat-grid-tile>Offer Status</mat-grid-tile>
+    <mat-grid-tile>{{offer.status}}</mat-grid-tile>
+
+    <mat-grid-tile>Volunteer Name</mat-grid-tile>
+    <mat-grid-tile>{{offer.volunteer.fullname}}</mat-grid-tile>
+
+    <mat-grid-tile>Volunteer Age</mat-grid-tile>
+    <mat-grid-tile>{{volunteerAge}} years old</mat-grid-tile>
+
+    <mat-grid-tile>Volunteer Occupation</mat-grid-tile>
+    <mat-grid-tile>{{offer.volunteer.occupation}}</mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-divider></mat-divider>
+
+  <ng-template [ngIf]="isReviewable">
+    <p>Review Offer</p>
+    <button mat-raised-button (click)="reviewOffer('Accepted')">Accept Offer</button>
+    <button mat-raised-button (click)="reviewOffer('Rejected')">Reject Offer</button>
+  </ng-template>
+
+  <ng-template #isNotReviewable>
+    <p>Offer has been {{offer.status}}</p>
+  </ng-template>
+
+</div>
+
+<style>
+  mat-grid-list {
+    margin: 8px 0 !important;
+  }
+
+  mat-grid-list mat-grid-tile:nth-child(odd) {
+    font-weight: bold;
+  }
+
+  .mat-grid-tile-content {
+    right: auto !important;
+  }
+
+  .mat-h2 {
+    margin-top: 12px !important;
+  }
+</style>

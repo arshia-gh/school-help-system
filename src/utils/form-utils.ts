@@ -58,13 +58,13 @@ export const MinLength = (minLength: number, name: string) =>
 
 export const Max = (max: number, name: string) =>
   helper(
-    err => `${name} must be less than ${err['max'].requiredLength}`,
+    err => `${name} must be less than ${err['max'].max}`,
     Validators.max(max),
   )
 
 export const Min = (min: number, name: string) =>
   helper(
-    err => `${name} must be more than ${err['min'].requiredLength}`,
+    err => `${name} must be more than ${err['min'].min}`,
     Validators.min(min),
   )
 

@@ -8,7 +8,7 @@ import { v4 as uuid } from 'uuid';
   providedIn: 'root'
 })
 export class OfferService {
-  private readonly _offers: Offer[]
+  private readonly _offers: Offer[] = [];
 
   constructor(
     private requestService: RequestService,
@@ -30,5 +30,9 @@ export class OfferService {
 
     this._offers.push(newOffer);
     return newOffer;
+  }
+
+  getById(id: string): Offer {
+    return this._offers.find(o => o.id === id);
   }
 }

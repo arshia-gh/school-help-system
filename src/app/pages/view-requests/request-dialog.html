@@ -33,15 +33,23 @@
   <mat-divider></mat-divider>
 
   <ng-template [ngIf]="isLoggedIn" [ngIfElse]="loggedOut">
-    <h2 class="mat-h2">Make an offer</h2>
-    <mat-form-field appearance="outline">
-      <mat-label>Remarks</mat-label>
-      <input matInput [(ngModel)]="remarks">
-    </mat-form-field>
-    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" style="margin-bottom: 1px">
-      <button mat-raised-button (click)="onCloseClick()">Close</button>
-      <button mat-raised-button [mat-dialog-close]="remarks" cdkFocusInitial color="primary">Submit</button>
-    </div>
+
+    <ng-template [ngIf]="isVolunteer" [ngIfElse]="isAdmin">
+      <h2 class="mat-h2">Make an offer</h2>
+      <mat-form-field appearance="outline">
+        <mat-label>Remarks</mat-label>
+        <input matInput [(ngModel)]="remarks">
+      </mat-form-field>
+      <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" style="margin-bottom: 1px">
+        <button mat-raised-button (click)="onCloseClick()">Close</button>
+        <button mat-raised-button [mat-dialog-close]="remarks" cdkFocusInitial color="primary">Submit</button>
+      </div>
+    </ng-template>
+
+    <ng-template #isAdmin>
+      <h3 class="text-center my-3"><strong>Only Volunteer account can submit offer</strong></h3>
+    </ng-template>
+
   </ng-template>
 
   <ng-template #loggedOut fxLayout="column">
