@@ -1,5 +1,5 @@
 import { formatDate } from "@angular/common"
-import { Request, RequestType, ResourceType, StudentLevel } from "../interfaces/Request.interface"
+import { Request, RequestStatus, RequestType, ResourceType, StudentLevel } from "../interfaces/Request.interface"
 import { School } from "../interfaces/School.interface"
 import { User, UserType } from "../interfaces/User.interface"
 
@@ -42,7 +42,9 @@ export const requests: Request[] = [
     description: 'need more mobile device',
     requestDate: new Date(2022, 9, 20),
     school: schools[0],
+    status: RequestStatus.Open,
     numRequired: 10,
+
     resourceType: ResourceType.MobileDevice,
     type: RequestType.Resource,
     offers: []
@@ -52,6 +54,7 @@ export const requests: Request[] = [
     description: 'Advanced teacher needed for History class.',
     requestDate: new Date(2022, 9, 1),
     school: schools[0],
+    status: RequestStatus.Open,
     numOfStudent: 10,
     studentLevel: StudentLevel.Advanced,
     proposedDateTime: new Date(2022, 9, 3),
@@ -63,6 +66,7 @@ export const requests: Request[] = [
     description: 'need more mobile for new student',
     requestDate: new Date(2022, 9, 3),
     school: schools[1],
+    status: RequestStatus.Open,
     numRequired: 30,
     resourceType: ResourceType.MobileDevice,
     type: RequestType.Resource,
@@ -73,6 +77,7 @@ export const requests: Request[] = [
     description: 'I need help tomorrow',
     requestDate: new Date(2022, 9, 13),
     school: schools[1],
+    status: RequestStatus.Open,
     numRequired: 5,
     resourceType: ResourceType.NetworkingEquipment,
     type: RequestType.Resource,
@@ -83,6 +88,7 @@ export const requests: Request[] = [
     description: 'need more computer for new student',
     requestDate: new Date(2021, 12, 15),
     school: schools[0],
+    status: RequestStatus.Open,
     numRequired: 10,
     resourceType: ResourceType.PersonalComputer,
     type: RequestType.Resource,
@@ -93,6 +99,7 @@ export const requests: Request[] = [
     description: 'Chinese teacher required',
     requestDate: new Date(2022, 9, 15 ),
     school: schools[1],
+    status: RequestStatus.Open,
     numOfStudent: 10,
     studentLevel: StudentLevel.Intermediate,
     proposedDateTime: new Date(2022, 9, 25),
@@ -104,6 +111,7 @@ export const requests: Request[] = [
     description: 'need android phone',
     requestDate: new Date(2022, 8, 1),
     school: schools[1],
+    status: RequestStatus.Open,
     numRequired: 7,
     resourceType: ResourceType.MobileDevice,
     type: RequestType.Resource,
@@ -114,6 +122,7 @@ export const requests: Request[] = [
     description: 'math teacher required',
     requestDate: new Date(2022, 8, 22),
     school: schools[0],
+    status: RequestStatus.Open,
     numOfStudent: 35,
     studentLevel: StudentLevel.Beginner,
     proposedDateTime: new Date(2022, 9, 10),
@@ -147,3 +156,5 @@ export const users: User[] = [
     type: UserType.Volunteer,
   }
 ]
+
+schools[0].requests.push(requests[0], requests[1])

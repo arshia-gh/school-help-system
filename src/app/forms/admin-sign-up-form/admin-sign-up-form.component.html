@@ -7,7 +7,7 @@
         <input matInput [formControl]="school.name">
         <mat-error validation-error [control]="school.name"></mat-error>
       </mat-form-field>
-      <div gdAreas="state city | address address" gdGap="0.75rem" gdRows="auto auto" formGroupName="address">
+      <div gdAreas="state city | street street" gdGap="0.75rem" gdRows="auto auto" formGroupName="address">
         <mat-form-field gdArea="state" appearance="outline" color="primary">
           <mat-label>State</mat-label>
           <input matInput [formControl]="schoolAddress.state">
@@ -18,7 +18,7 @@
           <input matInput [formControl]="schoolAddress.city">
           <mat-error validation-error [control]="schoolAddress.city"></mat-error>
         </mat-form-field>
-        <mat-form-field gdArea="address" appearance="outline" color="primary">
+        <mat-form-field gdArea="street" appearance="outline" color="primary">
           <mat-label>Street</mat-label>
           <input matInput [formControl]="schoolAddress.street" />
           <mat-error validation-error [control]="schoolAddress.street"></mat-error>

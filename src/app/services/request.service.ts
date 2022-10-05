@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
-import { CreateRequest, Request, Tutorial, RequestType, ResourceType, StudentLevel, Resource } from "../interfaces/Request.interface";
+import { CreateRequest, Request, Tutorial, RequestType, ResourceType, StudentLevel, Resource, RequestStatus } from "../interfaces/Request.interface";
 import { v4 as uuid } from "uuid";
 import { SchoolService } from "./school.service";
 import { requests } from "./seed";
+import { School } from "@app/interfaces/School.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +15,37 @@ export class RequestService {
     return this._requests
   }
 
-  addTutorial(request: CreateRequest<Tutorial>) {
-    return this._requests.push({
-      ...request,
+  addTutorial(tutorial: CreateRequest<Tutorial>, school: School) {
+    const newTutorial = {
+      ...tutorial,
+      school,
+      status: RequestStatus.Open,
+      offers: [],
+      requestDate: new Date(),
       type: RequestType.Tutorial,
       id: uuid(),
-    })
+    } as Tutorial
+    school.requests.push(newTutorial)
+    this._requests.push(newTutorial)
+    return newTutorial
   }
 
-  addResource(request: CreateRequest<Resource>) {
-    return this._requests.push({
-      ...request,
+  addResource(tutorial: CreateRequest<Resource>, school: School) {
+    const newResource = {
+      ...tutorial,
+      school,
+      status: RequestStatus.Open,
+      offers: [],
+      requestDate: new Date(),
       type: RequestType.Resource,
       id: uuid(),
-    })
+    } as Request
+    school.requests.push(newResource)
+    this._requests.push(newResource)
+    return newResource
+  }
+
+  getById(id: string) {
+    return requests.find(r => r.id = id);
   }
 }

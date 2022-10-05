@@ -1,0 +1,51 @@
+<h1 mat-dialog-title>Request | {{request.type}}</h1>
+<mat-divider></mat-divider>
+<div fxLayout="column" fxLayoutAlign="center stretch">
+
+  <mat-grid-list cols="2" *ngIf="request.type === 'Tutorial'" rowHeight="50px">
+    <mat-grid-tile>Request ID</mat-grid-tile>
+    <mat-grid-tile>{{request.id}}</mat-grid-tile>
+
+    <mat-grid-tile>Proposed Date </mat-grid-tile>
+    {{$any(request).proposedDateTime | json}}
+    <mat-grid-tile>{{$any(request).proposedDateTime | date : 'dd/MM/yyyy hh:mm aa'}}</mat-grid-tile>
+
+    <mat-grid-tile>Student Level</mat-grid-tile>
+    <mat-grid-tile>{{$any(request).studentLevel}}</mat-grid-tile>
+
+    <mat-grid-tile>Expected Number Of Student</mat-grid-tile>
+    <mat-grid-tile>{{$any(request).numOfStudent}}</mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="2" *ngIf="request.type === 'Resource'" rowHeight="50px">
+    <mat-grid-tile>Request ID</mat-grid-tile>
+    <mat-grid-tile>{{request.id}}</mat-grid-tile>
+
+    <mat-grid-tile>Requested Date</mat-grid-tile>
+    <mat-grid-tile>{{$any(request).requestDate | date : 'dd/MM/yyyy hh:mm aa'}}</mat-grid-tile>
+
+    <mat-grid-tile>Resource Type</mat-grid-tile>
+    <mat-grid-tile>{{$any(request).resourceType}}</mat-grid-tile>
+
+    <mat-grid-tile>Number Required</mat-grid-tile>
+    <mat-grid-tile>{{$any(request).numRequired}}</mat-grid-tile>
+  </mat-grid-list>
+</div>
+
+<style>
+  mat-grid-list {
+    margin: 8px 0 !important;
+  }
+
+  mat-grid-list mat-grid-tile:nth-child(odd) {
+    font-weight: bold;
+  }
+
+  .mat-grid-tile-content {
+    right: auto !important;
+  }
+
+  .mat-h2 {
+    margin-top: 12px !important;
+  }
+</style>

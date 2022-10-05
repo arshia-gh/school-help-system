@@ -5,12 +5,19 @@ export enum RequestType {
   Tutorial = "Tutorial",
   Resource = "Resource",
 }
+
+export enum RequestStatus {
+  Open = 'Open',
+  Closed = 'Closed',
+}
+
 export interface BaseRequest {
   id: string
   description: string
   requestDate: Date
   school: School
-  type: RequestType
+  type: RequestType,
+  status: RequestStatus,
   offers: Offer[]
 }
 
@@ -41,54 +48,10 @@ export interface Resource extends BaseRequest {
   type: RequestType.Resource
 }
 
-// import { v4 as uuid } from "uuid";
-
-// export function ramTut(): Tutorial {
-//   let random = Math.random() * (120948129481248 - 12834234) + 12834234;
-//   return {
-//     id: uuid(),
-//     studentLevel: StudentLevel[random % 3],
-//     description: uuid().repeat(random % 5),
-//     type: RequestType.Tutorial,
-//     requestDate: randomDate(new Date(2021, 0, 1), new Date()),
-//     proposedDateTime: randomDate(new Date(2021, 0, 1), new Date()),
-//     numOfStudent: random * 10000 % 50,
-//     school: {
-//       id: uuid(),
-//       name: "testing " + uuid()[0],
-//       address: {
-//         city: randomCity(),
-//         state: getSentence(),
-//         street: getSentence(),
-//       },
-//       requests: [],
-//     },
-//   };
-// }
-
-// function randomCity() {
-//   const names = [
-//     "Sliangan",
-//     "Drahburg",
-//     "Heywell",
-//     "Phaumond",
-//     "Griyrora",
-//     "Sodon",
-//     "Xille",
-//     "Eford",
-//     "Adafast",
-//     "Arkridge",
-//   ];
-
-//   return names[Math.floor(Math.random() * names.length)];
-// }
-// function randomDate(start, end) {
-//   return new Date(
-//     start.getTime() + Math.random() * (end.getTime() - start.getTime()),
-//   );
-// }
-
-export type CreateRequest<RequestType = Request> = Omit<RequestType, "id" | "type">;
+export type CreateRequest<RequestType = Request> = Omit<
+  RequestType,
+  "id" | "requestDate" | "school" | "offers" | "status" | "type"
+>
 
 export function isTutorial(request: BaseRequest): request is Tutorial {
   return request.type === RequestType.Tutorial;

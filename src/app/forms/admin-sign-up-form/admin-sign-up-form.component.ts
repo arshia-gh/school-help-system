@@ -63,6 +63,5 @@ export class AdminSignUpFormComponent {
 
     const createdSchool = this._schoolService.addSchool(school)
     this._userService.addSchoolAdmin(admin, createdSchool)
-    this._router.navigate(['/dashboard'])
   }
 }

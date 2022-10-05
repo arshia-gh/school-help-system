@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { RequestService } from "./request.service";
 import { UserService } from "./user.service";
-import { CreateOffer, Offer } from "../interfaces/Offer.interface";
+import { CreateOffer, Offer, OfferStatus } from "../interfaces/Offer.interface";
 import { v4 as uuid } from 'uuid';
 
 @Injectable({
@@ -21,8 +21,10 @@ export class OfferService {
   }
 
   addOffer(offer: CreateOffer) {
-    const newOffer: Offer = {
+    const newOffer = {
       ...offer,
+      dateOffered: new Date(),
+      status: OfferStatus.Pending,
       id: uuid(),
     }
 

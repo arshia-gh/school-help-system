@@ -1,7 +1,6 @@
 import { Injectable, EventEmitter } from "@angular/core";
 import { CreateUser, isAdmin, SchoolAdmin, User, UserType, Volunteer } from "../interfaces/User.interface";
 import { v4 as uuid } from 'uuid'
-import { SchoolService } from "./school.service";
 import { users } from "./seed";
 import { School } from "@app/interfaces/School.interface";
 import { Router } from "@angular/router";
@@ -21,7 +20,9 @@ export class UserService {
   private _commonFields: ['username', 'password', 'email'] = ['username', 'password', 'email']
   public authEvent = new EventEmitter<AuthEvent>()
 
-  constructor(private _router: Router, private _snackBar: MatSnackBar) {}
+  constructor(private _router: Router, private _snackBar: MatSnackBar) {
+    this._currentUser = users[0]
+  }
 
   get users() {
     return this._users

@@ -56,6 +56,18 @@ export const MinLength = (minLength: number, name: string) =>
     Validators.minLength(minLength),
   )
 
+export const Max = (max: number, name: string) =>
+  helper(
+    err => `${name} must be less than ${err['max'].requiredLength}`,
+    Validators.max(max),
+  )
+
+export const Min = (min: number, name: string) =>
+  helper(
+    err => `${name} must be more than ${err['min'].requiredLength}`,
+    Validators.min(min),
+  )
+
 export const Email = helper(
   () => `Email is not a valid email`,
   Validators.email,
@@ -77,6 +89,14 @@ export const RangeLength = (
     MaxLength(maxLength, name),
 ]
 
+export const Range = (
+  min: number, max: number,
+  name: string
+  ) => [
+    Min(min, name),
+    Max(max, name),
+]
+
 // export const Phone = (name: string) =>
 //   helper(
 //     () =>,
@@ -87,6 +107,9 @@ export const REmail = [Required('Email'), Email]
 
 export const RRangeLength: typeof RangeLength = (...args) =>
   [Required(args[2]), ...RangeLength(...args)]
+
+export const RRange: typeof Range = (...args) =>
+  [Required(args[2]), ...Range(...args)]
 
 export const Compose = (...validators: (ValidatorFn | ValidatorFn[])[]) =>
   validators.flatMap(v => v)

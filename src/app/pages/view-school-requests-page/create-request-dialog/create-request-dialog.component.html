@@ -1,0 +1,10 @@
+<div fxLayout="row" fxLayoutAlign="start center">
+  <h1 class="m-0" mat-dialog-title>Submit Request</h1>
+  <button class="ms-auto" mat-button (click)="closeClicked()">
+    <mat-icon aria-hidden="false" fontIcon="close"></mat-icon>
+  </button>
+</div>
+<mat-divider class="mt-4"></mat-divider>
+<div>
+  <app-create-request-form (formSubmitted)="closeClicked()"></app-create-request-form>
+</div>
