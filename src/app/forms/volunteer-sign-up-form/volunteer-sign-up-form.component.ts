@@ -56,7 +56,7 @@ import { UserService } from "@app/services/user.service";
 
       <mat-form-field appearance="outline" gdArea="dob">
         <mat-label>Date of birth</mat-label>
-        <input matInput [formControl]="volunteer.dob" [matDatepicker]="picker" (dateChange)="dateChangeHandler">
+        <input matInput [formControl]="volunteer.dob" [matDatepicker]="picker" (dateChange)="dateChangeHandler" [max]='today'>
         <mat-error validation-error [control]="volunteer.dob"></mat-error>
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -68,6 +68,7 @@ import { UserService } from "@app/services/user.service";
 })
 export class VolunteerSignUpFormComponent {
   form: FormStruct<CreateUser<Volunteer>>
+  today = new Date();
 
   constructor(
     private _userService: UserService,
@@ -76,9 +77,9 @@ export class VolunteerSignUpFormComponent {
     this.form = fb.group({
       username: ['', RRangeLength(6, 32, 'Username')],
       password: ['', RRangeLength(6, 32, 'Password')],
-      email:    ['', REmail],
+      email: ['', REmail],
       fullname: ['', RRangeLength(6, 32, 'Username')],
-      phoneNo:  ['', [Required('Phone Number')]],
+      phoneNo: ['', [Required('Phone Number')]],
       occupation: ['', [Required('Occupation')]],
       dob: ['01/01/2000', [Required('Date of birth')]],
     })
@@ -88,7 +89,7 @@ export class VolunteerSignUpFormComponent {
     return this.form.controls
   }
 
-  dateChangeHandler(date: Date){
+  dateChangeHandler(date: Date) {
     const stringDate = formatDate(date, 'mm/DD/yyyy', 'en')
     this.volunteer.dob.setValue(stringDate)
   }
