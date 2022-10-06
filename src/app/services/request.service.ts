@@ -46,6 +46,6 @@ export class RequestService {
   }
 
   getById(id: string) {
-    return requests.find(r => r.id = id);
+    return requests.find(r => r.id === id);
   }
 }
