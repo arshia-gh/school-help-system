@@ -19,7 +19,7 @@ export class RequestService {
     const newTutorial = {
       ...tutorial,
       school,
-      status: RequestStatus.Open,
+      status: RequestStatus.New,
       offers: [],
       requestDate: new Date(),
       type: RequestType.Tutorial,
@@ -34,7 +34,7 @@ export class RequestService {
     const newResource = {
       ...tutorial,
       school,
-      status: RequestStatus.Open,
+      status: RequestStatus.New,
       offers: [],
       requestDate: new Date(),
       type: RequestType.Resource,

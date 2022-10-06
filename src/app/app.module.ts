@@ -41,7 +41,17 @@ const appRoutes: Routes = [
         path: '',
         component: ViewSchoolRequestPageComponent,
         title: 'Dashboard'
-      }
+      },
+      {
+        path: 'profile',
+        component: ManageProfileComponent,
+        title: 'Profile'
+      },
+      {
+        path: 'offers/:requestId',
+        component: ViewOffersPageComponent,
+        title: 'Offers'
+      },
     ]
   },
   {
@@ -52,10 +62,7 @@ const appRoutes: Routes = [
       { path: 'login', component: LoginPageComponent, title: 'Login' },
     ]
   },
-  { path: 'dashboard', component: DashboardLayoutComponent },
-  { path: 'requests', component: ViewRequestsComponent },
-  { path: 'offers/:requestId', component: ViewOffersPageComponent },
-  { path: 'profile', component: ManageProfileComponent },
+  { path: 'requests', component: ViewRequestsComponent, title: 'Public Requests' },
 ]
 
 @NgModule({

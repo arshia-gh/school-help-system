@@ -59,6 +59,7 @@ export class UserService {
   addVolunteer(volunteer: CreateUser<Volunteer>) {
     const newVolunteer = {
       ...volunteer,
+      offers: [],
       id: uuid(),
       type: UserType.Volunteer,
     }
@@ -99,6 +100,13 @@ export class UserService {
       type: 'logout',
       data: user
     })
+
+    this._router.navigate(['/auth/login'])
+    this._snackBar.open(`Logout Successfull. Redirected you to login page`, 'OK', {
+      duration: 3000,
+      verticalPosition: 'top',
+      politeness: 'polite'
+    });
 
     return user
   }

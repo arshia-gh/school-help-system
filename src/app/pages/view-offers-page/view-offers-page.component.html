@@ -13,7 +13,6 @@
 
       <ng-container matColumnDef="dateOffered">
         <th mat-header-cell *matHeaderCellDef> Offer Date </th>
-        <td mat-cell *matCellDef="let req"> {{req.dateOffered}} </td>
       </ng-container>
 
       <ng-container matColumnDef="remarks">
@@ -28,7 +27,5 @@
     <mat-paginator showFirstLastButtons [length]="1" [pageSize]="10" [pageSizeOptions]="[10, 25, 100]"
       aria-label="Select page">
     </mat-paginator>
-
   </div>
-
 </div>

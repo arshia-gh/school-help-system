@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Offer, OfferStatus } from '@app/interfaces/Offer.interface';
-import { Request } from '@app/interfaces/Request.interface';
+import { Request, RequestStatus } from '@app/interfaces/Request.interface';
 import { OfferService } from '@app/services/offer.service';
 import { UserService } from '@app/services/user.service';
 import * as dayjs from 'dayjs';
@@ -33,28 +34,12 @@ export class ViewOffersPageComponent implements OnInit {
 
   showDetails(id: string): void {
     const selectedOffer = this.offerService.getById(id);
+    console.log();
+
     const dialogRef = this.dialog.open(OfferDetailDialog, {
       width: '600px',
       data: selectedOffer,
     });
-
-    // dialogRef.afterClosed().subscribe(remarks => {
-    //   if (remarks != undefined) {
-    //     //add to offers
-    //     const newOffer = this.offerService.addOffer({
-    //       remarks:remarks,
-    //       request: selectedRequest,
-    //       volunteer: this.userService.currentUser as Volunteer,
-    //     });
-
-    //     selectedRequest.offers.push(newOffer);
-
-    //     this._snackBar.open(
-    //       `Offer Submitted Successfully`,
-    //       'OK', { duration: 2000 }
-    //     );
-    //   }
-    // });
   }
 
 }
@@ -69,6 +54,7 @@ export class OfferDetailDialog {
   constructor(
     public dialogRef: MatDialogRef<OfferDetailDialog>,
     private userService: UserService,
+    private snackbar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public offer: Offer,
   ) {
   }
@@ -84,9 +70,11 @@ export class OfferDetailDialog {
 
   reviewOffer(status: string) {
     this.offer.status = OfferStatus[status]
+    this.offer.request.status = RequestStatus.Closed
   }
 
   get isReviewable() {
     return this.offer.status === OfferStatus.Pending
+      && this.offer.request.status === RequestStatus.New
   }
 }

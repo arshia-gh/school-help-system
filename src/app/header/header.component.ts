@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserType } from '@app/interfaces/User.interface';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -24,8 +25,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  get isAdminUser() {
+    return this.isLoggedIn && this.currentUser.type === UserType.SchoolAdmin
+  }
+
   logout() {
     this.userService.logout();
   }
-
 }

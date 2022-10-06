@@ -11,20 +11,12 @@ import { ViewRequestDetailDialog } from "./view-request-details-dialog/view-requ
 @Component({
   selector: 'app-view-school-request-page',
   template: `
-  <div fxLayout="row">
-    <!-- <mat-form-field appearance="outline" color="accent">
-      <mat-label>Filter By</mat-label>
-      <mat-select [(value)]="filterBy" (selectionChange)="filterByChanged()">
-        <mat-option *ngFor="let type of filterTypes" [value]="type">{{type}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" color="accent">
-      <mat-label>Select a {{filterBy === 'None' ? 'Filter By' : filterBy}}</mat-label>
-      <mat-select [(value)]="filterValue" [disabled]="filterBy == 'None'" (selectionChange)="filterValueChanged()">
-        <mat-option *ngFor="let option of filterOptions" [value]="option">{{option}}</mat-option>
-      </mat-select>
-    </mat-form-field> -->
+  <div fxLayout="row" fxLayoutAlign="start end">
+    <div>
+      <h2>School: {{admin.school.name}}</h2>
+      <p>Located at: {{school.address.street}}, {{school.address.state}}, {{school.address.city}}</p>
+      <p>Your position: {{admin.position}}</p>
+    </div>
     <button mat-raised-button color="primary" class="ms-auto" (click)="createRequestClicked()">
       Create Request
     </button>
@@ -108,7 +100,14 @@ export class ViewSchoolRequestPageComponent {
   }
 
   showOffers(requestId: string): void {
-    this._router.navigate(['/offers', requestId]);
+    this._router.navigate(['/dashboard/offers', requestId]);
   }
 
+  get admin() {
+    return this._userService.currentUser as SchoolAdmin
+  }
+
+  get school() {
+    return this.admin.school
+  }
 }

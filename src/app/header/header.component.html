@@ -2,19 +2,21 @@
   <img src="/assets/school_help_logo.png" width="50" height="50" routerLink="/" role="button" />
   <span routerLink="/" role="button" fxFlex>SchoolHELP</span>
   <ng-template [ngIf]="isLoggedIn">
-    <h3>Hello, {{currentUser.fullname}} </h3>
+    <h3>Hello, {{currentUser.fullname}}
+      <!-- <span *ngIf="currentUser.position != null">[{{currentUser.position}}]</span> -->
+    </h3>
   </ng-template>
 
   <a mat-raised-button routerLink="requests" color="accent">View Requests</a>
+  <a *ngIf="isAdminUser" mat-raised-button routerLink="/dashboard" color="accent">Dashboard</a>
 
   <ng-template [ngIf]="isLoggedIn" [ngIfElse]="loggedOut">
+    <a mat-raised-button *ngIf="isAdminUser" routerLink="/dashboard/profile" color="accent">Profile</a>
     <a mat-raised-button (click)="logout()" color="accent">Logout</a>
-    <a mat-raised-button routerLink="/dashboard" color="accent">Dashboard</a>
   </ng-template>
 
   <ng-template #loggedOut>
     <a mat-raised-button routerLink="auth/signup" color="accent">Sign Up</a>
     <a mat-raised-button routerLink="auth/login" color="accent">Login</a>
   </ng-template>
-  <a mat-raised-button routerLink="profile" color="accent">profile</a>
 </mat-toolbar>

@@ -69,7 +69,7 @@ export class CreateRequestFormComponent {
 
     const { proposedDate, proposedTime, ...tutorial } = this.tutorialForm.getRawValue()
 
-    const parsedTime = this._dayjs.parse('09:10', 'HH:mm')
+    const parsedTime = this._dayjs.parse(proposedTime, 'HH:mm')
     const proposedDateTime = this._dayjs.parse(proposedDate)
       .set('hour', parsedTime.get('hour'))
       .set('minute', parsedTime.get('minute'))

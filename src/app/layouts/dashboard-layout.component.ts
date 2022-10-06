@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { SchoolAdmin } from '@app/interfaces/User.interface';
+import { UserService } from '@app/services/user.service';
 
 @Component({
   selector: 'app-dashboard-layout-component',
@@ -16,7 +18,6 @@ import { Component } from '@angular/core';
         z-index: -1000;
       }
     </style>
-
     <div class="custom-background"></div>
     <div class="container my-3">
       <router-outlet></router-outlet>

@@ -7,7 +7,7 @@ export enum RequestType {
 }
 
 export enum RequestStatus {
-  Open = 'Open',
+  New = 'New',
   Closed = 'Closed',
 }
 

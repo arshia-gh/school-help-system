@@ -26,10 +26,12 @@
 
   <mat-divider></mat-divider>
 
-  <ng-template [ngIf]="isReviewable">
+  <ng-template [ngIf]="isReviewable" [ngIfElse]="isNotReviewable">
     <p>Review Offer</p>
-    <button mat-raised-button (click)="reviewOffer('Accepted')">Accept Offer</button>
-    <button mat-raised-button (click)="reviewOffer('Rejected')">Reject Offer</button>
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <button mat-raised-button color="primary" class="me-2" (click)="reviewOffer('Accepted')">Accept Offer</button>
+      <button mat-raised-button color="warn" (click)="reviewOffer('Rejected')">Reject Offer</button>
+    </div>
   </ng-template>
 
   <ng-template #isNotReviewable>

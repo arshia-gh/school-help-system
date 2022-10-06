@@ -36,6 +36,8 @@ import { ActivatedRoute } from "@angular/router";
     position: fixed;
     top: 50%;
     left: 50%;
+    max-height: 75vh;
+    overflow-y: scroll;
     transform: translate(-50%, -50%);
   }
 
