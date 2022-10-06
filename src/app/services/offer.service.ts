@@ -28,6 +28,9 @@ export class OfferService {
       id: uuid(),
     }
 
+
+    console.log(this._offers);
+
     this._offers.push(newOffer);
     return newOffer;
   }
