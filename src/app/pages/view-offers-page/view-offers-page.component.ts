@@ -69,7 +69,9 @@ export class OfferDetailDialog {
 
   reviewOffer(status: string) {
     this.offer.status = OfferStatus[status]
-    this.offer.request.status = RequestStatus.Closed
+    if (status === 'Accepted') {
+      this.offer.request.status = RequestStatus.Closed
+    }
   }
 
   get isReviewable() {
