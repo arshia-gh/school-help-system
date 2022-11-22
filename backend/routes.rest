@@ -1,0 +1,103 @@
+### Login
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+    "username": "arsh",
+    "password": "hello world"
+}
+
+### Create Volunteer
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+    "username": "arshhjgjia",
+    "password": "gh123",
+    "email": "gholamjhgi@email.com",
+    "fullname": "arshia gh",
+    "phoneNo": "kjjghhj",
+    "type": "Volunteer",
+    "occupation": "jg",
+    "dob": "2002-06-20"
+}
+
+### Create SchoolAdmin
+POST http://localhost:8080/schools/6359db5f688aabd13eee7129/admins
+Content-Type: application/json
+
+{
+    "username": "arsh",
+    "password": "gh123",
+    "email": "gholami.arshia@email.com",
+    "fullname": "arshia gh",
+    "phoneNo": "+60 1124345464",
+    "position": "IT Support",
+    "staffId": "GG100"
+}
+
+### Create School
+POST http://localhost:8080/schools
+Content-Type: application/json
+
+{
+    "name": "HELP University",
+    "address": {
+        "city": "Shah Alam",
+        "state": "Selangor",
+        "street": "lorem"
+    }
+}
+
+### Find School by ID
+GET http://localhost:8080/schools/6359db5f688aabd13eee7129
+Content-Type: application/json
+
+### Update User Profile
+PATCH http://localhost:8080/users/arsh
+Content-Type: application/json
+
+{
+    "staffId": "hello world"
+}
+
+### Get Admins of a School
+
+GET http://localhost:8080/schools/6359db5f688aabd13eee7129/admins
+Content-Type: application/json
+
+### Get Requests of a School
+GET http://localhost:8080/schools/6359db5f688aabd13eee7129/requests
+Content-Type: application/json
+
+### Create Request
+POST http://localhost:8080/schools/6359db5f688aabd13eee7129/requests
+Content-Type: application/json
+
+{
+    "title": "test",
+    "description": "test description"
+}
+
+### Get All Requests
+GET http://localhost:8080/requests
+Content-Type: application/json
+
+### Find Request by Id
+
+GET http://localhost:8080/requests/637cbfa85e467ea06480fcdb
+Content-Type: application/json
+
+### Create Offer
+
+POST http://localhost:8080/requests/637cbfa85e467ea06480fcdb/offers
+Content-Type: application/json
+
+{
+    "remarks": "Hello World"
+}
+
+### Accept Offer
+
+PUT http://localhost:8080/requests/637cbfa85e467ea06480fcdb/offers/637ce415caa1167cae2ea8ce/accept
+Content-Type: application/json
