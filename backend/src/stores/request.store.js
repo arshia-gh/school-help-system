@@ -2,19 +2,20 @@ import createHttpError from "http-errors";
 import { OfferModel, OfferStatus, RequestModel, RequestStatus, RequestType, ResourceModel, TutorialModel } from "../models/request.model";
 import SchoolStore from "./school.store";
 
-export async function All(sortBy, orderBy = 'desc') {
+export async function All(includeSchool = false, sortBy, orderBy = 'desc') {
     const requests = RequestModel.find()
     if (sortBy) requests.sort({ sortBy: orderBy })
-    
+    if (includeSchool) requests.populate('school')
+
     return requests;
 }
 
 export async function FindSchoolRequests(schoolId, sortBy, orderBy = "desc") {
     const school = await SchoolStore.Find(schoolId);
-    
+
     const requests = RequestModel.find({ school })
     if (sortBy) requests.sort({ sortBy: orderBy })
-    
+
     return requests;
 }
 
@@ -26,7 +27,7 @@ export async function Find(requestId) {
 
 export async function Create(schoolId, admin, input) {
     const school = await SchoolStore.Find(schoolId);
-    
+
     const model = input.type === RequestType.Resource ? ResourceModel : TutorialModel
 
     return model.create({
@@ -69,7 +70,7 @@ export async function ReviewOffer(requestId, offerId, status) {
 export async function CloseRequest(requestId) {
     const request = await Find(requestId);
     return RequestModel.findByIdAndUpdate(
-        request.id, 
+        request.id,
         { status: RequestStatus.Old, reviewedAt: new Date() },
         { new: true }
     );

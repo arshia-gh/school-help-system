@@ -25,6 +25,7 @@ import { SchoolService } from "src/app/services/school.service";
 import { UserService } from "src/app/services/user.service";
 import { OfferService } from "src/app/services/offer.service";
 import { User, UserType, Volunteer } from "src/app/interfaces/User.interface";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-view-requests",
@@ -32,14 +33,18 @@ import { User, UserType, Volunteer } from "src/app/interfaces/User.interface";
   styleUrls: ["./view-requests.component.scss"],
 })
 export class ViewRequestsComponent implements OnInit {
+
+  private requestSub: Subscription | undefined;
+
   @ViewChild(MatTable)
   table: MatTable<any>;
   filterBy = "None";
   filterValue = "None";
   filterTypes = ["School", "City", "Request Date"];
   filterOptions = [];
-  source = this.requestService.requests.filter(r => r.status === RequestStatus.New);
-  requests = this.source;
+  source = null;
+  requests = null;
+
   displayedColumns: string[] = [
     "id",
     "description",
@@ -47,6 +52,7 @@ export class ViewRequestsComponent implements OnInit {
     "city",
     "schoolName",
   ];
+
   currentUser: User;
 
   constructor(
@@ -58,6 +64,9 @@ export class ViewRequestsComponent implements OnInit {
     private _snackBar: MatSnackBar,
   ) {
     this.currentUser = this.userService.currentUser;
+    this.source = this.requestService.getRequests();
+    console.log(this.source)
+    // this.requests = this.requestService.getRequests();
   }
 
   private dateOptions = ["Today", "Last 7 days", "Last 30 days"];
@@ -135,6 +144,10 @@ export class ViewRequestsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.requests = this.requestService.getRequests();
+    this.requestSub = this.requestService.getRequestsUpdateListener().subscribe((requests: BaseRequest[]) => {
+      this.requests = requests;
+    });
   }
 }
 

@@ -5,10 +5,10 @@ import { OfferStatus } from "../models/request.model";
 const requests = Router();
 
 requests.get(
-    '/', 
+    '/',
     async (req, res) => {
-        const { sortBy, orderBy } = req.query
-        const requests = await RequestStore.All(sortBy, orderBy)
+        const { includeSchool, sortBy, orderBy } = req.query
+        const requests = await RequestStore.All(includeSchool, sortBy, orderBy)
         res.json({ data: requests })
     }
 )
@@ -25,11 +25,11 @@ requests.post(
     '/:id/offers',
     async (req, res) => {
         const request = await RequestStore.CreateOffer(
-            req.params.id, 
-            req.user, 
+            req.params.id,
+            req.user,
             req.body
         )
-        
+
         res.json({ data: request });
     }
 )
@@ -46,8 +46,8 @@ requests.put(
     '/:id/offers/:offerId/reject',
     async (req, res) => {
         const offer = await RequestStore.ReviewOffer(
-            req.params.id, 
-            req.params.offerId, 
+            req.params.id,
+            req.params.offerId,
             OfferStatus.Rejected
         );
 
@@ -59,11 +59,11 @@ requests.put(
     '/:id/offers/:offerId/accept',
     async (req, res) => {
         const offer = await RequestStore.ReviewOffer(
-            req.params.id, 
-            req.params.offerId, 
+            req.params.id,
+            req.params.offerId,
             OfferStatus.Accepted
         );
-        
+
         res.json({ data: offer })
     }
 )

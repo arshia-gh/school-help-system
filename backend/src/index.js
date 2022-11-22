@@ -7,6 +7,7 @@ import database from './database';
 
 import mainRouter from './routers'
 import ErrorHandler from './middlewares/error-handlers';
+import authenticate from './middlewares/authenticate';
 
 // initialize the app
 const server = new Server(env.apiPort)
@@ -19,8 +20,12 @@ app.use(morgan(env.isProd ? 'combined' : 'dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+//resolve CORS
+app.use(authenticate.SetCORS);
+
 // register routers
 app.use(mainRouter);
+
 app.use(ErrorHandler.routeNotFoundHandler)
 
 // register error handlers

@@ -30,6 +30,7 @@ import { CreateRequestDialog } from './pages/view-school-requests-page/create-re
 import { CreateRequestFormComponent } from './forms/create-request-form/create-request-form.component';
 import { OfferDetailDialog, ViewOffersPageComponent } from './pages/view-offers-page/view-offers-page.component';
 import { ManageProfileComponent } from './pages/manage-profile/manage-profile.component';
+import { HttpClientModule } from '@angular/common/http';
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -107,6 +108,7 @@ const appRoutes: Routes = [
     FlexLayoutModule,
     MaterialModule,
     FormsModule,
+    HttpClientModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [
