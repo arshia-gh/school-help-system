@@ -3,8 +3,8 @@ POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-    "username": "arsh",
-    "password": "hello world"
+    "username": "clinton",
+    "password": "123"
 }
 
 ### Create Volunteer
@@ -23,15 +23,15 @@ Content-Type: application/json
 }
 
 ### Create SchoolAdmin
-POST http://localhost:8080/schools/6359db5f688aabd13eee7129/admins
+POST http://localhost:8080/schools/637cb631cf5b437c245d5738/admins
 Content-Type: application/json
 
 {
-    "username": "arsh",
-    "password": "gh123",
-    "email": "gholami.arshia@email.com",
-    "fullname": "arshia gh",
-    "phoneNo": "+60 1124345464",
+    "username": "clinton",
+    "password": "123",
+    "email": "admin@email.com",
+    "fullname": "clinton",
+    "phoneNo": "+60 100200",
     "position": "IT Support",
     "staffId": "GG100"
 }
@@ -71,12 +71,16 @@ GET http://localhost:8080/schools/6359db5f688aabd13eee7129/requests
 Content-Type: application/json
 
 ### Create Request
-POST http://localhost:8080/schools/6359db5f688aabd13eee7129/requests
+POST http://localhost:8080/schools/637cb631cf5b437c245d5738/requests
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzN2U0OTM2YzA4MjlkYWRlZTlkZTA4YyIsInVzZXJuYW1lIjoiY2xpbnRvbiIsInR5cGUiOiJTY2hvb2xBZG1pbiIsImlhdCI6MTY2OTIyMDcwN30.4y4YysDgpc-p5A7nunkQYkm48R574BQpMWuUgg0wyDk
 
 {
     "title": "test",
-    "description": "test description"
+    "description": "test description",
+    "numRequired": 25,
+    "type": "Resource",
+    "resourceType": "MobileDevice"
 }
 
 ### Get All Requests

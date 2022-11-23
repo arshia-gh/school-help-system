@@ -2,12 +2,13 @@ import { Component, EventEmitter, Output, ViewChild } from "@angular/core";
 import { NonNullableFormBuilder } from "@angular/forms";
 import { MatTabGroup } from "@angular/material/tabs";
 import { CreateRequest, Resource, ResourceType, StudentLevel, Tutorial } from "@app/interfaces/Request.interface";
-import { SchoolAdmin } from "@app/interfaces/User.interface";
+import { CompleteSchoolAdmin } from "@app/interfaces/User.interface";
 import { RequestService } from "@app/services/request.service";
-import { UserService } from "@app/services/user.service";
 import { Required, RRange, RRangeLength, touchFormFields } from "src/utils/form-utils";
 import { FormStruct } from "src/utils/ts-utils";
 import { DayJsService } from "@app/services/dayjs.service";
+import { AuthService } from "@app/services/auth.service";
+import { Observable, switchMap } from "rxjs";
 
 enum SelectedForm {
   TutorialForm = 0,
@@ -29,11 +30,11 @@ export class CreateRequestFormComponent {
 
   tutorialForm: FormStruct<TutorialFormFields>
   resourceForm: FormStruct<ResourceFormFields>
-  user: SchoolAdmin
+  admin$: Observable<CompleteSchoolAdmin>
 
   constructor(
     private _requestService: RequestService,
-    private _userService: UserService,
+    private _authService: AuthService,
     private _dayjs: DayJsService,
     fb: NonNullableFormBuilder
   ) {
@@ -51,7 +52,7 @@ export class CreateRequestFormComponent {
       resourceType: [ResourceType.MobileDevice as string, [Required('Resource type')]]
     })
 
-    this.user = this._userService.currentUser as SchoolAdmin
+    this.admin$ = this._authService.admin()
   }
 
   formSelected() {
@@ -75,30 +76,35 @@ export class CreateRequestFormComponent {
       .set('minute', parsedTime.get('minute'))
       .toDate()
 
-    this._requestService.addTutorial(
-      {
-        ...tutorial,
-        proposedDateTime,
-        studentLevel: StudentLevel[tutorial.studentLevel]
-      },
-      this.user.school
-    )
-
-    this.formSubmitted.emit()
+    this.admin$.pipe(
+      switchMap(admin =>
+        this._requestService.addTutorial(
+          {
+            ...tutorial,
+            proposedDateTime,
+            studentLevel: StudentLevel[tutorial.studentLevel]
+          },
+          admin.school.id
+        )
+      )
+    ).subscribe(() => this.formSubmitted.emit())
   }
 
   resourceSubmitHandler() {
     if (this.resourceForm.invalid) return touchFormFields(this.resourceForm)
 
     const resource = this.resourceForm.getRawValue()
-    this._requestService.addResource(
-      {
-        ...resource,
-        resourceType: StudentLevel[resource.resourceType]
-      },
-      this.user.school
-    )
-    this.formSubmitted.emit()
+    this.admin$.pipe(
+      switchMap(admin =>
+        this._requestService.addResource(
+          {
+            ...resource,
+            resourceType: StudentLevel[resource.resourceType]
+          },
+          admin.school.id
+        )
+      ),
+    ).subscribe(() => this.formSubmitted.emit())
   }
 
   get tutorial() {

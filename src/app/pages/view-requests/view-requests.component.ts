@@ -136,15 +136,15 @@ export class ViewRequestsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((remarks) => {
       if (remarks != undefined) {
         //add to offers
-        const newOffer = this.offerService.addOffer({
-          remarks: remarks,
-          request: selectedRequest,
-          volunteer: user as Volunteer,
-        });
+        // const newOffer = this.offerService.addOffer({
+        //   remarks: remarks,
+        //   request: selectedRequest,
+        //   volunteer: user as Volunteer,
+        // });
 
-        const volunteer = user as Volunteer;
-        selectedRequest.offers.push(newOffer);
-        volunteer.offers.push(newOffer);
+        // const volunteer = user as Volunteer;
+        // selectedRequest.offers.push(newOffer);
+        // volunteer.offers.push(newOffer);
 
         this._snackBar.open(
           `Offer Submitted Successfully`,

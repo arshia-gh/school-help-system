@@ -1,14 +1,14 @@
-import { CreateUser, SchoolAdmin, UserType, } from "@app/interfaces/User.interface";
-import type { CreateSchool } from "@app/interfaces/School.interface";
+import { CompleteSchoolAdmin, CreateUser, SchoolAdmin, UserType, } from "@app/interfaces/User.interface";
 import type { FormStruct } from "src/utils/ts-utils";
 
 import { Component, OnInit } from "@angular/core";
 import { NonNullableFormBuilder } from "@angular/forms";
 import { REmail, Required, RRangeLength, touchFormFields } from "src/utils/form-utils";
-import { UserService } from "@app/services/user.service";
-import { SchoolService } from "@app/services/school.service";
 import { Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { AuthService } from "@app/services/auth.service";
+import { first, Observable, tap } from "rxjs";
+import { UserService } from "@app/services/user.service";
 
 @Component({
   selector: 'app-manage-profile',
@@ -18,9 +18,10 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 
 export class ManageProfileComponent implements OnInit {
   form: FormStruct<{ admin: CreateUser<SchoolAdmin> }>
-  currentAdmin = this._userService.currentUser as SchoolAdmin;
+  currentAdmin$: Observable<CompleteSchoolAdmin>
 
   constructor(
+    private _authService: AuthService,
     private _userService: UserService,
     private _router: Router,
     private _snackbar: MatSnackBar,
@@ -37,6 +38,7 @@ export class ManageProfileComponent implements OnInit {
         staffId: ['', [Required('staffId')]],
       })
     })
+    this.currentAdmin$ = _authService.admin();
   }
 
   get admin() {
@@ -47,31 +49,19 @@ export class ManageProfileComponent implements OnInit {
     if (this.form.invalid) return touchFormFields(this.form)
 
     const { admin } = this.form.getRawValue()
-    const updatedAdmin: SchoolAdmin = {
-      school: this.currentAdmin.school,
-      type: this.currentAdmin.type,
-      id: this.currentAdmin.id,
-      ...admin
-    }
-    this._userService.updateAdmin(updatedAdmin);
+    this._userService.updateAdmin(admin);
     this._snackbar.open('Profile Updated Successfully', 'OK');
   }
 
   ngOnInit(): void {
-    if (this._userService.currentUser?.type != UserType.SchoolAdmin) {
-      // this._router.navigate(['/'])
-      this._snackbar.open('Redirected to landing page because only Admin can manage profile', 'OK');
-    }
-    else {
-      const fc = this.form.controls.admin.controls;
-      fc.username.disable();
-      fc.username.setValue(this.currentAdmin.username);
-      fc.password.setValue(this.currentAdmin.password);
-      fc.email.setValue(this.currentAdmin.email);
-      fc.fullname.setValue(this.currentAdmin.fullname);
-      fc.phoneNo.setValue(this.currentAdmin.phoneNo);
-      fc.staffId.setValue(this.currentAdmin.staffId);
-      fc.position.setValue(this.currentAdmin.position);
-    }
+    this._authService.user$.pipe(
+      tap(user => {
+        if (user.type === UserType.SchoolAdmin) return;
+        this._router.navigate(['/'])
+        this._snackbar.open(
+          'Redirected to landing page because only Admin can manage profile', 'OK'
+        );
+      })
+    )
   }
 }

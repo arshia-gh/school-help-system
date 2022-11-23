@@ -33,12 +33,12 @@ export class ViewOffersPageComponent implements OnInit {
   }
 
   showDetails(id: string): void {
-    const selectedOffer = this.offerService.getById(id);
+    // const selectedOffer = this.offerService.getById(id);
 
-    const dialogRef = this.dialog.open(OfferDetailDialog, {
-      width: '600px',
-      data: selectedOffer,
-    });
+    // const dialogRef = this.dialog.open(OfferDetailDialog, {
+    //   width: '600px',
+    //   data: selectedOffer,
+    // });
   }
 
 }

@@ -8,6 +8,7 @@ import { REmail, Required, RRangeLength, touchFormFields } from "src/utils/form-
 import { UserService } from "@app/services/user.service";
 import { SchoolService } from "@app/services/school.service";
 import { Router } from "@angular/router";
+import { switchMap, tap } from "rxjs";
 
 @Component({
   selector: 'app-admin-sign-up-form',
@@ -61,7 +62,11 @@ export class AdminSignUpFormComponent {
 
     const { admin, school } = this.form.getRawValue()
 
-    const createdSchool = this._schoolService.addSchool(school)
-    this._userService.addSchoolAdmin(admin, createdSchool)
+    return this._schoolService.addSchool(school).pipe(
+      switchMap(school => this._userService.addSchoolAdmin(
+          admin, school.id
+        )
+      )
+    )
   }
 }

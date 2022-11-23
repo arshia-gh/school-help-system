@@ -30,6 +30,6 @@ export class SchoolService {
       `http://localhost:8080/schools`,
       school
     )
-    .pipe(map(result => result))
+    .pipe(map(result => result.data))
   }
 }

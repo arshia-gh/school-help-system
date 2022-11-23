@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="container mt-5">
   <fieldset formGroupName="admin">
     <legend>Admin Information</legend>
-    <div class="mt-2" gdAreas="
+    <div *ngIf="currentAdmin$ | async as currentAdmin" class="mt-2" gdAreas="
         username password |
         email email |
         fullname phoneNo |
@@ -10,7 +10,7 @@
 
       <mat-form-field appearance="outline" gdArea="username">
         <mat-label>Username</mat-label>
-        <input matInput [formControl]="admin.username">
+        <input matInput [formControl]="admin.username" [value]="currentAdmin.username" [disabled]="true">
         <mat-error validation-error [control]="admin.username"></mat-error>
       </mat-form-field>
 
@@ -22,31 +22,31 @@
 
       <mat-form-field appearance="outline" gdArea="email">
         <mat-label>Email</mat-label>
-        <input matInput [formControl]="admin.email">
+        <input matInput [formControl]="admin.email" [value]="currentAdmin.email">
         <mat-error validation-error [control]="admin.email"></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" gdArea="fullname">
         <mat-label>Full Name</mat-label>
-        <input matInput [formControl]="admin.fullname">
+        <input matInput [formControl]="admin.fullname" [value]="currentAdmin.fullname">
         <mat-error validation-error [control]="admin.fullname"></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" gdArea="phoneNo">
         <mat-label>Phone Number</mat-label>
-        <input matInput [formControl]="admin.phoneNo">
+        <input matInput [formControl]="admin.phoneNo" [value]="currentAdmin.phoneNo">
         <mat-error validation-error [control]="admin.phoneNo"></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" gdArea="staffId">
         <mat-label>Staff ID</mat-label>
-        <input matInput [formControl]="admin.staffId">
+        <input matInput [formControl]="admin.staffId" [value]="currentAdmin.staffId">
         <mat-error validation-error [control]="admin.staffId"></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" gdArea="position">
         <mat-label>Position</mat-label>
-        <input matInput [formControl]="admin.position">
+        <input matInput [formControl]="admin.position" [value]="currentAdmin.position">
         <mat-error validation-error [control]="admin.position"></mat-error>
       </mat-form-field>
     </div>

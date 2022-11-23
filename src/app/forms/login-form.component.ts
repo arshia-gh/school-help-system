@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { isAdmin, UserLogin, BaseUser } from 'src/app/interfaces/User.interface';
-import { UserService } from 'src/app/services/user.service';
+import { UserLogin, UserType } from 'src/app/interfaces/User.interface';
 import { Required, touchFormFields } from 'src/utils/form-utils';
 import { FormStruct } from 'src/utils/ts-utils';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -33,7 +32,6 @@ export class LoginFormComponent {
 
   constructor(
     fb: NonNullableFormBuilder,
-    private _userService: UserService,
     private _authService: AuthService,
     private _router: Router,
     private _snackBar: MatSnackBar,
@@ -60,10 +58,10 @@ export class LoginFormComponent {
     this._authService.login(username, password)
       .subscribe(user => {
         if (user) {
-          this._snackBar.open(`Successfully login as ${user['fullname']}`, null, {
+          this._snackBar.open(`Successfully login as ${user['fullname']}`, 'Ok', {
             duration: 3000,
           })
-          this._router.navigate(['/requests']);
+          this._router.navigate(user.type !== UserType.SchoolAdmin ? ['/requests'] : ['/dashboard']);
         }
         else {
           this._snackBar.open('Incorrect username or password', null, {

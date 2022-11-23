@@ -27,7 +27,7 @@ import { ViewRequestDetailDialog } from "./view-request-details-dialog/view-requ
   </div>
 
 
-  <div fxLayout="column" class="mat-elevation-z5 mt-3">
+  <div *ngIf="requests$ | async as requests" fxLayout="column" class="mat-elevation-z5 mt-3">
     <table #table mat-table [dataSource]="requests" class="w-100">
 
       <ng-container matColumnDef="id">
