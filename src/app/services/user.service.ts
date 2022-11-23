@@ -5,6 +5,7 @@ import { users } from "./seed";
 import { School } from "@app/interfaces/School.interface";
 import { Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { HttpClient } from "@angular/common/http";
 
 interface AuthEvent {
   type: 'login' | 'logout',
@@ -20,7 +21,7 @@ export class UserService {
   private _commonFields: ['username', 'password', 'email'] = ['username', 'password', 'email']
   public authEvent = new EventEmitter<AuthEvent>()
 
-  constructor(private _router: Router, private _snackBar: MatSnackBar) { }
+  constructor(private _router: Router, private _snackBar: MatSnackBar, private _http: HttpClient) { }
 
   get users() {
     return this._users

@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Required, touchFormFields } from 'src/utils/form-utils';
 import { FormStruct } from 'src/utils/ts-utils';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: 'app-login-form',
@@ -33,6 +34,7 @@ export class LoginFormComponent {
   constructor(
     fb: NonNullableFormBuilder,
     private _userService: UserService,
+    private _authService: AuthService,
     private _router: Router,
     private _snackBar: MatSnackBar,
   ) {
@@ -54,13 +56,15 @@ export class LoginFormComponent {
     if (this.form.invalid) return touchFormFields(this.form)
 
     const { username, password } = this.form.value
-    const user = this._userService.login(username, password)
 
-    if (!user) {
-      this._snackBar.open('Incorrect username or password', null, {
-        duration: 3000,
+    this._authService.login(username, password)
+      .subscribe(user => {
+        if (!user) {
+          this._snackBar.open('Incorrect username or password', null, {
+            duration: 3000,
+          })
+          this.form.reset()
+        }
       })
-      this.form.reset()
-    }
   }
 }
