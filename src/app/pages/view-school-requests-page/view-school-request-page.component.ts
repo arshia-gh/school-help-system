@@ -85,7 +85,7 @@ export class ViewSchoolRequestPageComponent {
     private _router: Router,
     private _dialog: MatDialog,
   ) {
-    this.requests$ = _authService.$user.pipe(
+    this.requests$ = _authService.user$.pipe(
       filter(isAdmin),
       switchMap(user => _requestService.getSchoolRequests(user.school))
     )

@@ -19,10 +19,9 @@ export async function Find(id) {
 }
 
 export async function CreateAdmin(schoolId, input) {
-    // combine this function with UserStore.create?
     const school = await Find(schoolId);
     const { password, ...data } = input;
-    return SchoolAdminModel.create({ 
+    return SchoolAdminModel.create({
         ...data,
         school,
         password: await utils.hashPassword(password)
