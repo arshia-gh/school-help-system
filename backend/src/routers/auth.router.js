@@ -1,11 +1,19 @@
 import { Router } from "express";
 import createHttpError from "http-errors";
 import jwt from 'jsonwebtoken';
-
+import { VerifyJwtToken } from '../middlewares/authenticate'
 import env from "../environment";
 import authStore from '../stores/auth.store';
 
 const auth = Router();
+
+auth.get(
+  '/auth',
+  VerifyJwtToken,
+  async(req, res) => {
+    res.json({ data: req.user })
+  }
+)
 
 auth.post(
     '/login',
