@@ -20,7 +20,14 @@ export async function FindSchoolRequests(schoolId, sortBy, orderBy = "desc") {
 }
 
 export async function Find(requestId) {
-    const request = await RequestModel.findById(requestId)
+    const request = await RequestModel.findById(requestId).populate({
+      path: 'offers',
+      populate: {
+        path: 'submittedBy',
+        model: 'Volunteer'
+      }
+
+    })
     if (!request) throw createHttpError(404, `request with id of ${id} was not found`);
     return request;
 }
@@ -55,15 +62,12 @@ export async function FindOffer(requestId, offerId) {
 }
 
 export async function ReviewOffer(requestId, offerId, status) {
-    const offer = await FindOffer(requestId, offerId);
+    const request = await Find(requestId)
+    const offerIndex = request.offers.findIndex(offer => offer.id === offerId)
+    request.offers[offerIndex].status = status
+    await request.save()
 
-    if (offer.status !== OfferStatus.Pending) {
-        throw createHttpError(400, 'to review an offer its status must be pending');
-    }
-
-    // to be updated
-
-    return offer;
+    return request;
 }
 
 

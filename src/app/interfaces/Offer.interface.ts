@@ -9,10 +9,9 @@ export enum OfferStatus {
 export interface Offer {
   id: string
   remarks: string
-  request: Request
-  volunteer: Volunteer
   status: OfferStatus
-  dateOffered: Date
+  createdAt: Date
+  submittedBy: Volunteer
 }
 
-export type CreateOffer = Omit<Offer, "id" | 'status' | 'dateOffered' | 'volunteer' | 'status' | 'request'>;
+export type CreateOffer = Omit<Offer, "id" | 'status' | 'createdAt' | 'submittedBy' | 'status'>;

@@ -39,6 +39,10 @@ const OfferSchema = new mongoose.Schema({
     submittedBy: { type: mongoose.Types.ObjectId, ref: VolunteerModel.modelName },
 }, { timestamps: true })
 
+OfferSchema.set('toJSON', {
+  transform: (_, ret) => utils.toMongooseJson(ret)
+})
+
 const RequestSchema = new mongoose.Schema({
     title: String,
     description: String,

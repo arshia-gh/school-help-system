@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { CreateOffer, Offer } from "../interfaces/Offer.interface";
+import { CreateOffer, Offer, OfferStatus } from "../interfaces/Offer.interface";
 import { HttpClient } from "@angular/common/http";
 import { SuccessResult } from "@app/interfaces/Api.interface";
 import { map, Observable } from "rxjs";
@@ -11,6 +11,20 @@ export class OfferService {
   private readonly _offers: Offer[] = [];
 
   constructor(private _http: HttpClient) {}
+
+  acceptOffer(requestId: string, offerId: string) {
+    return this._http.put<SuccessResult<Offer>>(
+      `http://localhost:8080/requests/${requestId}/offers/${offerId}/accept`,
+      {}
+    ).pipe(map(result => result.data));
+  }
+
+  rejectOffer(requestId: string, offerId: string) {
+    return this._http.put<SuccessResult<Offer>>(
+      `http://localhost:8080/requests/${requestId}/offers/${offerId}/accept`,
+      {}
+    ).pipe(map(result => result.data));
+  }
 
   get offers() {
     // use requestOffers

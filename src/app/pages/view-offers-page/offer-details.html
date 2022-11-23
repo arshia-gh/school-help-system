@@ -6,7 +6,7 @@
     <mat-grid-tile>{{offer.id}}</mat-grid-tile>
 
     <mat-grid-tile>Offered Date </mat-grid-tile>
-    <mat-grid-tile>{{offer.dateOffered | date: 'dd/MM/yyyy'}}</mat-grid-tile>
+    <mat-grid-tile>{{offer.createdAt | date: 'dd/MM/yyyy'}}</mat-grid-tile>
 
     <mat-grid-tile>Offer Remarks</mat-grid-tile>
     <mat-grid-tile>{{offer.remarks}}</mat-grid-tile>
@@ -15,13 +15,13 @@
     <mat-grid-tile>{{offer.status}}</mat-grid-tile>
 
     <mat-grid-tile>Volunteer Name</mat-grid-tile>
-    <mat-grid-tile>{{offer.volunteer.fullname}}</mat-grid-tile>
+    <mat-grid-tile>{{offer.submittedBy?.fullname}}</mat-grid-tile>
 
     <mat-grid-tile>Volunteer Age</mat-grid-tile>
     <mat-grid-tile>{{volunteerAge}} years old</mat-grid-tile>
 
     <mat-grid-tile>Volunteer Occupation</mat-grid-tile>
-    <mat-grid-tile>{{offer.volunteer.occupation}}</mat-grid-tile>
+    <mat-grid-tile>{{offer.submittedBy?.occupation}}</mat-grid-tile>
   </mat-grid-list>
 
   <mat-divider></mat-divider>
