@@ -6,5 +6,5 @@ export interface SuccessResult<T> {
 
 export interface AuthResult {
   user: User
-  token: string
+  accessToken: string
 }

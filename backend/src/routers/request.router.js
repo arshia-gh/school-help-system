@@ -1,6 +1,7 @@
 import RequestStore from "../stores/request.store";
 import { Router } from "express";
 import { OfferStatus } from "../models/request.model";
+import { VerifyJwtToken } from "../middlewares/authenticate";
 
 const requests = Router();
 
@@ -23,6 +24,7 @@ requests.get(
 
 requests.post(
     '/:id/offers',
+    VerifyJwtToken,
     async (req, res) => {
         const request = await RequestStore.CreateOffer(
             req.params.id,
@@ -44,6 +46,7 @@ requests.get(
 
 requests.put(
     '/:id/offers/:offerId/reject',
+    VerifyJwtToken,
     async (req, res) => {
         const offer = await RequestStore.ReviewOffer(
             req.params.id,
@@ -57,6 +60,7 @@ requests.put(
 
 requests.put(
     '/:id/offers/:offerId/accept',
+    VerifyJwtToken,
     async (req, res) => {
         const offer = await RequestStore.ReviewOffer(
             req.params.id,
@@ -70,6 +74,7 @@ requests.put(
 
 requests.put(
     '/:id/close',
+    VerifyJwtToken,
     async (req, res) => {
         const request = await RequestStore.CloseRequest(req.params.id);
         res.json({ data: request })

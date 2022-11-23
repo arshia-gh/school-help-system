@@ -34,6 +34,7 @@ export class AuthService {
         map(response => {
           const user = response?.user ?? null;
           this._currentUser = user;
+          this._token = response.accessToken;
           this.authStatusListener.next(user)
           return user;
         }),
