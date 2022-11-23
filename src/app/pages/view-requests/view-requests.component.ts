@@ -163,7 +163,6 @@ export class ViewRequestsComponent implements OnInit {
 })
 export class RequestDetailDialog {
   remarks: string;
-  private authListenerSubs: Subscription;
 
   get isLoggedIn() {
     return this.currentUser != null;
@@ -183,7 +182,6 @@ export class RequestDetailDialog {
 
   constructor(
     public dialogRef: MatDialogRef<RequestDetailDialog>,
-    private authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public requestData: RequestData) {
   }
 
