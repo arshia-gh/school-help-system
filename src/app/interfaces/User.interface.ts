@@ -5,7 +5,7 @@ export enum UserType {
   Volunteer = 'Volunteer',
 }
 
-interface BaseUser {
+export interface BaseUser {
   id: string
   username: string
   email: string

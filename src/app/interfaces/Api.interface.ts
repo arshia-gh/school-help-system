@@ -5,6 +5,6 @@ export interface SuccessResult<T> {
 }
 
 export interface AuthResult {
-  data: User
+  user: User
   token: string
 }

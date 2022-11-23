@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { isAdmin, UserLogin } from 'src/app/interfaces/User.interface';
+import { isAdmin, UserLogin, BaseUser } from 'src/app/interfaces/User.interface';
 import { UserService } from 'src/app/services/user.service';
 import { Required, touchFormFields } from 'src/utils/form-utils';
 import { FormStruct } from 'src/utils/ts-utils';
@@ -59,7 +59,13 @@ export class LoginFormComponent {
 
     this._authService.login(username, password)
       .subscribe(user => {
-        if (!user) {
+        if (user) {
+          this._snackBar.open(`Successfully login as ${user['fullname']}`, null, {
+            duration: 3000,
+          })
+          this._router.navigate(['/requests']);
+        }
+        else {
           this._snackBar.open('Incorrect username or password', null, {
             duration: 3000,
           })

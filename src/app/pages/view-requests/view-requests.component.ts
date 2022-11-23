@@ -15,6 +15,7 @@ import {
   BaseRequest,
   isResource,
   isTutorial,
+  Request,
   RequestStatus,
   Resource,
   Tutorial,
@@ -26,6 +27,7 @@ import { UserService } from "src/app/services/user.service";
 import { OfferService } from "src/app/services/offer.service";
 import { User, UserType, Volunteer } from "src/app/interfaces/User.interface";
 import { Subscription } from "rxjs";
+import { AuthService } from "@app/services/auth.service";
 
 @Component({
   selector: "app-view-requests",
@@ -35,6 +37,8 @@ import { Subscription } from "rxjs";
 export class ViewRequestsComponent implements OnInit {
 
   private requestSub: Subscription | undefined;
+  private authListenerSubs: Subscription;
+  private currentUser: User;
 
   @ViewChild(MatTable)
   table: MatTable<any>;
@@ -44,7 +48,6 @@ export class ViewRequestsComponent implements OnInit {
   filterOptions = [];
   source = null;
   requests = null;
-
   displayedColumns: string[] = [
     "id",
     "description",
@@ -53,18 +56,28 @@ export class ViewRequestsComponent implements OnInit {
     "schoolName",
   ];
 
-  currentUser: User;
-
   constructor(
     private requestService: RequestService,
     private schoolService: SchoolService,
+    private authService: AuthService,
     private dialog: MatDialog,
-    private userService: UserService,
     private offerService: OfferService,
     private _snackBar: MatSnackBar,
   ) {
-    this.currentUser = this.userService.currentUser;
-    this.requests = this.source = this.requestService.getRequests();
+    this.requestService.getRequests();
+
+    this.requestSub = this.requestService.getRequestsUpdateListener()
+      .subscribe((requests: BaseRequest[]) => {
+        this.requests = this.source = requests;
+      });
+    this.authListenerSubs = this.authService.getAuthStatusListener()
+      .subscribe(user => {
+        this.currentUser = user;
+      })
+    // this.currentUser = this.userService.currentUser;
+  }
+
+  ngOnInit(): void {
   }
 
   private dateOptions = ["Today", "Last 7 days", "Last 30 days"];
@@ -113,10 +126,11 @@ export class ViewRequestsComponent implements OnInit {
   }
 
   showDetails(id: string): void {
+    const user = this.authService.currentUser;
     const selectedRequest = this.requestService.getById(id);
     const dialogRef = this.dialog.open(RequestDetailDialog, {
       width: "600px",
-      data: selectedRequest,
+      data: new RequestData(user, selectedRequest),
     });
 
     dialogRef.afterClosed().subscribe((remarks) => {
@@ -125,10 +139,10 @@ export class ViewRequestsComponent implements OnInit {
         const newOffer = this.offerService.addOffer({
           remarks: remarks,
           request: selectedRequest,
-          volunteer: this.currentUser as Volunteer,
+          volunteer: user as Volunteer,
         });
 
-        const volunteer = this.currentUser as Volunteer;
+        const volunteer = user as Volunteer;
         selectedRequest.offers.push(newOffer);
         volunteer.offers.push(newOffer);
 
@@ -140,13 +154,6 @@ export class ViewRequestsComponent implements OnInit {
       }
     });
   }
-
-  ngOnInit(): void {
-    this.requests = this.requestService.getRequests();
-    this.requestSub = this.requestService.getRequestsUpdateListener().subscribe((requests: BaseRequest[]) => {
-      this.requests = requests;
-    });
-  }
 }
 
 @Component({
@@ -156,24 +163,41 @@ export class ViewRequestsComponent implements OnInit {
 })
 export class RequestDetailDialog {
   remarks: string;
-  isLoggedIn = false;
-  isVolunteer: boolean;
+  private authListenerSubs: Subscription;
+
+  get isLoggedIn() {
+    return this.currentUser != null;
+  };
+
+  get request() {
+    return this.requestData.request;
+  }
+
+  get currentUser() {
+    return this.requestData.user;
+  }
+
+  get isVolunteer() {
+    return this.currentUser?.type === UserType.Volunteer
+  }
 
   constructor(
     public dialogRef: MatDialogRef<RequestDetailDialog>,
-    private userService: UserService,
-    @Inject(MAT_DIALOG_DATA) public request: BaseRequest,
-  ) {
-    this.isLoggedIn = userService.currentUser != null;
-    this.isVolunteer = this.isLoggedIn &&
-      userService.currentUser.type === UserType.Volunteer;
-
-    this.userService.authEvent.subscribe((e) => {
-      this.isLoggedIn = e.type === "login";
-    });
+    private authService: AuthService,
+    @Inject(MAT_DIALOG_DATA) public requestData: RequestData) {
   }
 
   onCloseClick(): void {
     this.dialogRef.close();
+  }
+}
+
+class RequestData {
+  user: User;
+  request: Request
+
+  constructor(user: User, request: Request) {
+    this.user = user;
+    this.request = request;
   }
 }

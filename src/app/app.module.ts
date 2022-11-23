@@ -30,7 +30,8 @@ import { CreateRequestDialog } from './pages/view-school-requests-page/create-re
 import { CreateRequestFormComponent } from './forms/create-request-form/create-request-form.component';
 import { OfferDetailDialog, ViewOffersPageComponent } from './pages/view-offers-page/view-offers-page.component';
 import { ManageProfileComponent } from './pages/manage-profile/manage-profile.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './services/auth-interceptor';
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -111,12 +112,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
   ],
-  providers: [
-    {
-      provide: TitleStrategy,
-      useClass: CustomTitleStrategy,
-    }
-  ],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule {

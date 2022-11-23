@@ -7,7 +7,7 @@ export async function login(username, password) {
     // - users should be able to display their username as they entered in registration
     // - users should be able to login with case-insensitive username
     const user = await UserModel.findOne({ username: username.toLowerCase() });
-    
+
     if (user) {
         authenticated = await bcrypt.compare(password, user.password);
     }
