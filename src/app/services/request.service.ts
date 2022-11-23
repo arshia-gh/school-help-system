@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
-import { CreateRequest, Request, Tutorial, RequestType, ResourceType, StudentLevel, Resource, RequestStatus } from "../interfaces/Request.interface";
-import { SchoolService } from "./school.service";
-import { School } from "@app/interfaces/School.interface";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { CreateRequest, Request, Tutorial, RequestType, Resource } from "../interfaces/Request.interface";
+import { HttpClient } from "@angular/common/http";
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SuccessResult } from "@app/interfaces/Api.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +28,12 @@ export class RequestService {
     return this.requests;// creating new array by copying the old array
   }
 
+  getSchoolRequests(schoolId: string) {
+    return this.http
+      .get<SuccessResult<Request[]>>(`http://localhost:8080/schools/${schoolId}/requests`)
+      .pipe(map(result => result.data))
+  }
+
   getRequestsUpdateListener() {
     return this.requestsUpdated.asObservable();
   }
@@ -37,32 +42,18 @@ export class RequestService {
     return this._requests
   }
 
-  addTutorial(tutorial: CreateRequest<Tutorial>, school: School) {
-    const newTutorial = {
-      ...tutorial,
-      school,
-      status: RequestStatus.New,
-      offers: [],
-      requestDate: new Date(),
-      type: RequestType.Tutorial,
-    } as Tutorial
-    school.requests.push(newTutorial)
-    this._requests.push(newTutorial)
-    return newTutorial
+  addTutorial(tutorial: CreateRequest<Tutorial>, schoolId: string) {
+    return this.http.post<SuccessResult<Tutorial>>(
+      `http://localhost:8080/schools/${schoolId}/requests`,
+      { ...tutorial, type: RequestType.Tutorial }
+    ).pipe(map(result => result.data))
   }
 
-  addResource(tutorial: CreateRequest<Resource>, school: School) {
-    const newResource = {
-      ...tutorial,
-      school,
-      status: RequestStatus.New,
-      offers: [],
-      requestDate: new Date(),
-      type: RequestType.Resource,
-    } as Request
-    school.requests.push(newResource)
-    this._requests.push(newResource)
-    return newResource
+  addResource(resource: CreateRequest<Resource>, schoolId: string) {
+    return this.http.post<SuccessResult<Resource>>(
+        `http://localhost:8080/schools/${schoolId}/requests`,
+        { ...resource, type: RequestType.Resource }
+    ).pipe(map(result => result.data))
   }
 
   getById(id: string) {

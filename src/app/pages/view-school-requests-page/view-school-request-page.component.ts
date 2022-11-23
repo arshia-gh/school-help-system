@@ -3,18 +3,22 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatTable } from "@angular/material/table";
 import { Router } from "@angular/router";
 import { Request } from "@app/interfaces/Request.interface";
-import { SchoolAdmin } from "@app/interfaces/User.interface";
-import { UserService } from "@app/services/user.service";
+import { CompleteSchoolAdmin, isAdmin, } from "@app/interfaces/User.interface";
+import { AuthService } from "@app/services/auth.service";
+import { RequestService } from "@app/services/request.service";
+import { filter, map, Observable, switchMap } from "rxjs";
 import { CreateRequestDialog } from "./create-request-dialog/create-request-dialog.component";
 import { ViewRequestDetailDialog } from "./view-request-details-dialog/view-request-dialog.component";
 
 @Component({
   selector: 'app-view-school-request-page',
   template: `
-  <div fxLayout="row" fxLayoutAlign="start end">
+  <div *ngIf="admin$ | async as admin" fxLayout="row" fxLayoutAlign="start end">
     <div>
       <h2>School: {{admin.school.name}}</h2>
-      <p>Located at: {{school.address.street}}, {{school.address.state}}, {{school.address.city}}</p>
+      <p *ngIf="school$ | async as school">
+      Located at: {{school.address.street}}, {{school.address.state}}, {{school.address.city}}
+      </p>
       <p>Your position: {{admin.position}}</p>
     </div>
     <button mat-raised-button color="primary" class="ms-auto" (click)="createRequestClicked()">
@@ -67,17 +71,25 @@ import { ViewRequestDetailDialog } from "./view-request-details-dialog/view-requ
 export class ViewSchoolRequestPageComponent {
   @ViewChild(MatTable) private _table: MatTable<any>
 
+  requests$: Observable<Request[]>
+  admin$: Observable<CompleteSchoolAdmin>
+
   requests: Request[]
   displayedColumns: string[] = ['id', 'description', 'requestDate', 'options']
 
 
   constructor(
-    private _userService: UserService,
+    _authService: AuthService,
+    _requestService: RequestService,
+
     private _router: Router,
     private _dialog: MatDialog,
   ) {
-    const currentUser = this._userService.currentUser as SchoolAdmin
-    this.requests = currentUser.school.requests
+    this.requests$ = _authService.$user.pipe(
+      filter(isAdmin),
+      switchMap(user => _requestService.getSchoolRequests(user.school))
+    )
+    this.admin$ = _authService.admin()
   }
 
   createRequestClicked() {
@@ -103,11 +115,7 @@ export class ViewSchoolRequestPageComponent {
     this._router.navigate(['/dashboard/offers', requestId]);
   }
 
-  get admin() {
-    return this._userService.currentUser as SchoolAdmin
-  }
-
-  get school() {
-    return this.admin.school
+  get school$() {
+    return this.admin$.pipe(map(admin => admin.school))
   }
 }

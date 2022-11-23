@@ -13,15 +13,15 @@ import authenticate from './middlewares/authenticate';
 const server = new Server(env.apiPort)
 const app = server.app
 
+//resolve CORS
+app.use(authenticate.SetCORS);
+
 // log incoming requests
 app.use(morgan(env.isProd ? 'combined' : 'dev'))
 
 // parser incoming requests
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
-//resolve CORS
-app.use(authenticate.SetCORS);
 
 // register routers
 app.use(mainRouter);

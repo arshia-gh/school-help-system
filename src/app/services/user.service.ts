@@ -1,120 +1,92 @@
-import { Injectable, EventEmitter } from "@angular/core";
-import { CreateUser, isAdmin, SchoolAdmin, User, UserType, Volunteer } from "../interfaces/User.interface";
-import { v4 as uuid } from 'uuid'
-import { users } from "./seed";
-import { School } from "@app/interfaces/School.interface";
+import { Injectable } from "@angular/core";
+import { CreateUser, SchoolAdmin, User, Volunteer } from "../interfaces/User.interface";
 import { Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { HttpClient } from "@angular/common/http";
-
-interface AuthEvent {
-  type: 'login' | 'logout',
-  data: User
-}
+import { map } from "rxjs";
+import { SuccessResult } from "@app/interfaces/Api.interface";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private _users: User[] = users
   private _currentUser?: User
-  private _commonFields: ['username', 'password', 'email'] = ['username', 'password', 'email']
-  public authEvent = new EventEmitter<AuthEvent>()
-
   constructor(private _router: Router, private _snackBar: MatSnackBar, private _http: HttpClient) { }
 
-  get users() {
-    return this._users
-  }
-
-  get currentUser() {
-    return this._currentUser
-  }
-
   updateAdmin(admin: SchoolAdmin): void {
-    const userId = this.currentUser.id;
+    // const userId = this._currentUser.id;
 
-    if (!userId) throw new Error('User is not logged in');
+    // if (!userId) throw new Error('User is not logged in');
 
-    const index = users.findIndex(u => u.id === userId);
-    users[index] = admin;
-    this._currentUser = admin;
-    this.authEvent.emit({
-      type: 'login',
-      data: this._currentUser
-    })
+    // const index = users.findIndex(u => u.id === userId);
+    // users[index] = admin;
+    // this._currentUser = admin;
+    // this.authEvent.emit({
+    //   type: 'login',
+    //   data: this._currentUser
+    // })
   }
 
-  addSchoolAdmin(schoolAdmin: CreateUser<SchoolAdmin>, school: School) {
-    const newAdmin = {
-      ...schoolAdmin,
-      school,
-      id: uuid(),
-      type: UserType.SchoolAdmin,
-    }
-    this._users.push(newAdmin as User)
-    this.login(newAdmin.username, newAdmin.password)
-    return newAdmin
+  addSchoolAdmin(schoolAdmin: CreateUser<SchoolAdmin>, schoolId: string) {
+    return this._http
+      .post<SuccessResult<SchoolAdmin>>(
+        `http://localhost:8080/schools/${schoolId}/admins`,
+        schoolAdmin
+      )
+      .pipe(map(result => result))
   }
 
   addVolunteer(volunteer: CreateUser<Volunteer>) {
-    const newVolunteer = {
-      ...volunteer,
-      offers: [],
-      id: uuid(),
-      type: UserType.Volunteer,
-    }
-
-    this._users.push(newVolunteer as User)
-    this.login(newVolunteer.username, newVolunteer.password)
-    return newVolunteer
+    return this._http
+    .post<SuccessResult<Volunteer>>(`http://localhost:8080/signup`, volunteer)
+    .pipe(map(result => result))
   }
 
-  login(username: string, password: string) {
-    this._currentUser = this._users.find(
-      user => user.username === username && user.password === password
-    )
+  // login(username: string, password: string) {
+  //   this._currentUser = this._users.find(
+  //     user => user.username === username && user.password === password
+  //   )
 
-    if (this._currentUser) {
-      this.authEvent.emit({
-        type: 'login',
-        data: this._currentUser
-      })
+  //   if (this._currentUser) {
+  //     this.authEvent.emit({
+  //       type: 'login',
+  //       data: this._currentUser
+  //     })
 
-      const destination = isAdmin(this._currentUser) ? 'dashboard' : 'requests';
-      this._router.navigate(['/' + destination])
-      this._snackBar.open(`Login Successful. Redirected you to view ${destination}`, 'OK', {
-        duration: 3000,
-        verticalPosition: 'top',
-        politeness: 'polite'
-      });
-    }
+  //     const destination = isAdmin(this._currentUser) ? 'dashboard' : 'requests';
+  //     this._router.navigate(['/' + destination])
+  //     this._snackBar.open(`Login Successful. Redirected you to view ${destination}`, 'OK', {
+  //       duration: 3000,
+  //       verticalPosition: 'top',
+  //       politeness: 'polite'
+  //     });
+  //   }
 
-    return this._currentUser
-  }
+  //   return this._currentUser
+  // }
 
-  logout() {
-    const user = this._currentUser
-    this._currentUser = undefined
+  // logout() {
+  //   const user = this._currentUser
+  //   this._currentUser = undefined
 
-    this.authEvent.emit({
-      type: 'logout',
-      data: user
-    })
+  //   this.authEvent.emit({
+  //     type: 'logout',
+  //     data: user
+  //   })
 
-    if (!this._router.isActive('/requests', false))
-      this._router.navigate(['/auth/login'])
+  //   if (!this._router.isActive('/requests', false))
+  //     this._router.navigate(['/auth/login'])
 
-    this._snackBar.open(`Logout Successfull. Redirected you to login page`, 'OK', {
-      duration: 3000,
-      verticalPosition: 'top',
-      politeness: 'polite'
-    });
+  //   this._snackBar.open(`Logout Successfull. Redirected you to login page`, 'OK', {
+  //     duration: 3000,
+  //     verticalPosition: 'top',
+  //     politeness: 'polite'
+  //   });
 
-    return user
-  }
+  //   return user
+  // }
 
-  loggedIn() {
-    return !!this._currentUser
-  }
+  // loggedIn() {
+  //   return !!this._currentUser
+  // }
 }

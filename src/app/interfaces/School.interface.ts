@@ -1,5 +1,3 @@
-import type { Request } from "./Request.interface"
-
 export interface Address {
   street: string
   state: string
@@ -10,7 +8,6 @@ export interface School {
   id: string
   name: string
   address: Address
-  requests: Request[]
 }
 
-export type CreateSchool = Omit<School, 'id' | 'requests'>
+export type CreateSchool = Omit<School, 'id'>

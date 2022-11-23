@@ -1,6 +1,4 @@
-import { Offer } from "./Offer.interface"
-import type { School } from "./School.interface"
-
+import { School } from "./School.interface"
 
 export enum UserType {
   SchoolAdmin = 'SchoolAdmin',
@@ -10,7 +8,6 @@ export enum UserType {
 interface BaseUser {
   id: string
   username: string
-  password: string
   email: string
   phoneNo: string
   fullname: string
@@ -20,23 +17,23 @@ interface BaseUser {
 }
 
 export type User = BaseUser & (SchoolAdmin | Volunteer)
-
 export interface SchoolAdmin extends BaseUser {
   position: string
   staffId: string
-  school: School
+  school: string
   type: UserType.SchoolAdmin
 }
+
+export type CompleteSchoolAdmin = Omit<SchoolAdmin, 'school'> & { school: School }
 
 export interface Volunteer extends BaseUser {
   occupation: string
   dob: string
   type: UserType.Volunteer
-  offers: Offer[];
 }
 
-export type CreateUser<UserType = BaseUser> = Omit<UserType, 'id' | 'school' | 'type' | 'offers'>
-export type UserLogin = Pick<User, 'username' | 'password'>
+export type CreateUser<UserType = BaseUser> = Omit<UserType, 'id' | 'type'>
+export type UserLogin = Pick<User, 'username'>
 
 export function isAdmin(user: User): user is SchoolAdmin {
   return user.type === UserType.SchoolAdmin

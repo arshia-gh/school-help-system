@@ -1,16 +1,17 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AuthResult } from "@app/interfaces/Api.interface";
-import { User } from "@app/interfaces/User.interface";
-import { catchError, map, Observable } from "rxjs";
+import { CompleteSchoolAdmin, isAdmin, isVolunteer, User } from "@app/interfaces/User.interface";
+import { filter, map, Observable, switchMap } from "rxjs";
+import { SchoolService } from "./school.service";
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private _token: string
-  private $user: Observable<User>;
+  $user: Observable<User>;
 
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient, private _schoolsService: SchoolService) {}
 
   public token() {
     return this._token
@@ -20,8 +21,22 @@ export class AuthService {
     const $user = this._http.post<AuthResult>('http://localhost:8080/login', { username, password })
     .pipe(
       map(response => response.data),
-      catchError(response => null)
     )
+
     return $user;
+  }
+
+  public admin(): Observable<CompleteSchoolAdmin> {
+    return this.$user.pipe(
+      filter(isAdmin),
+      switchMap(admin =>
+        this._schoolsService.findSchoolById(admin.school)
+        .pipe(map(school => ({ ...admin, school })))
+      )
+    )
+  }
+
+  public volunteer() {
+    return this.$user.pipe(filter(isVolunteer))
   }
 }

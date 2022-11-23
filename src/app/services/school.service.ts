@@ -1,28 +1,35 @@
 import { Injectable } from "@angular/core";
 import { CreateSchool, School } from "../interfaces/School.interface";
-import { v4 as uuid } from "uuid";
-import { schools } from "./seed";
+import { HttpClient } from "@angular/common/http";
+import { SuccessResult } from "@app/interfaces/Api.interface";
+import { map } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SchoolService {
-  private _schools: School[] = schools
 
-  constructor() {
+  constructor(private _http: HttpClient) {}
+
+  public schools() {
+    return this._http
+      .get<SuccessResult<School[]>>('http://localhost:8080/schools')
+      .pipe(map(result => result.data))
   }
 
-  get schools() {
-    return this._schools
+  public findSchoolById(schoolId: string) {
+    return this._http
+      .get<SuccessResult<School>>(`http://localhost:8080/schools/${schoolId}`)
+      .pipe(map(result => result.data))
   }
+
 
   addSchool(school: CreateSchool) {
-    this._schools.push({
-      ...school,
-      id: uuid(),
-      requests: [],
-    })
-
-    return this._schools[this._schools.length - 1]
+    return this._http
+    .post<SuccessResult<School>>(
+      `http://localhost:8080/schools`,
+      school
+    )
+    .pipe(map(result => result))
   }
 }

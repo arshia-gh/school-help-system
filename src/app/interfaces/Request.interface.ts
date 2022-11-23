@@ -1,4 +1,3 @@
-import type { School } from "./School.interface";
 import type { Offer } from "./Offer.interface";
 
 export enum RequestType {
@@ -15,7 +14,7 @@ export interface BaseRequest {
   id: string
   description: string
   requestDate: Date
-  school: School
+  school: string
   type: RequestType,
   status: RequestStatus,
   offers: Offer[]
