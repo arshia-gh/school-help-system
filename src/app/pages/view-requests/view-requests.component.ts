@@ -136,21 +136,20 @@ export class ViewRequestsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((remarks) => {
       if (remarks != undefined) {
         //add to offers
-        // const newOffer = this.offerService.addOffer({
-        //   remarks: remarks,
-        //   request: selectedRequest,
-        //   volunteer: user as Volunteer,
-        // });
-
-        // const volunteer = user as Volunteer;
-        // selectedRequest.offers.push(newOffer);
-        // volunteer.offers.push(newOffer);
-
-        this._snackBar.open(
-          `Offer Submitted Successfully`,
-          "OK",
-          { duration: 2000 },
-        );
+        this.offerService.addOffer(id, { remarks: remarks })
+          .subscribe(res => {
+            if (res) {
+              this._snackBar.open(
+                `Successfully submitted offer to ${selectedRequest.type} [${selectedRequest.id}]`,
+                null,
+                {
+                  duration: 2000,
+                  panelClass: 'success-snackbar',
+                  verticalPosition: "top"
+                },
+              );
+            }
+          });
       }
     });
   }

@@ -1,2 +1,41 @@
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.success-snackbar {
+  background-color: #689F38;
+  color: white
+}
+
+.warning-snackbar {
+  background-color: #FFD740;
+  color: black
+}
+
+.info-snackbar {
+  background-color: #2196F3;
+  color: white
+}
+
+.error-snackbar {
+  background-color: #F44336;
+  color: white
+}
+
+.mat-snack-bar-top {
+  //overwrite because of nav bar
+  margin-top: 80px !important;
+}
+
+.table-container {
+  height: 70vh;
+  max-height: 70vh;
+  background-color: white;
+  overflow-y: scroll
+}

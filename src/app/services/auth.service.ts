@@ -42,6 +42,7 @@ export class AuthService {
 
           this._currentUser = user;
           this._token = response.accessToken
+          this._token = response.accessToken;
           this.authStatusListener.next(user)
 
           this.user$.next(user);

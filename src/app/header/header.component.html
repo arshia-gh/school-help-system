@@ -2,7 +2,7 @@
   <img src="/assets/school_help_logo.png" width="50" height="50" routerLink="/" role="button" />
   <span routerLink="/" role="button" fxFlex>SchoolHELP</span>
   <ng-template [ngIf]="isLoggedIn">
-    <h3>Hello, {{currentUser.fullname}}
+    <h3>{{currentUser.type}} | {{currentUser.fullname}}
       <!-- <span *ngIf="currentUser.position != null">[{{currentUser.position}}]</span> -->
     </h3>
   </ng-template>
