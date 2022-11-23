@@ -8,6 +8,7 @@ import { catchError, map, Observable, Subject } from "rxjs";
 })
 export class AuthService {
   private _token: string
+  private _currentUser: User
   private authStatusListener = new Subject<User>();
 
   constructor(private _http: HttpClient) { }
@@ -16,25 +17,30 @@ export class AuthService {
     return this.authStatusListener.asObservable();
   }
 
-  public token() {
+  get token(): string {
     return this._token
+  }
+
+  get currentUser(): User {
+    return this._currentUser;
   }
 
   public login(username: string, password: string) {
     const $user = this._http.post<AuthResult>('http://localhost:8080/login', { username, password })
       .pipe(
         map(response => {
-          const user = response.user;
+          const user = response?.user ?? null;
+          this._currentUser = user;
           this.authStatusListener.next(user)
           return user;
         }),
-        catchError(response => null)
       );
     return $user;
   }
 
   public logout() {
-    this.token = null;
+    this._token = null;
+    this._currentUser = null;
     this.authStatusListener.next(null);
   }
 }

@@ -15,7 +15,7 @@ auth.post(
 
         // where is the user?
         if (!user) {
-            throw createHttpError(401, 'bad credentials');
+            res.json(null);
         }
 
         // jwt black magic

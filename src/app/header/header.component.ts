@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserType } from '@app/interfaces/User.interface';
+import { User, UserType } from '@app/interfaces/User.interface';
 import { AuthService } from '@app/services/auth.service';
 import { Subscription } from 'rxjs';
-import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -14,13 +13,13 @@ export class HeaderComponent implements OnInit {
 
   private authListenerSubs: Subscription;
   logoPath = '/assets/school_help_logo.png'
-  currentUser = null;
+  currentUser: User;
 
   constructor(private authService: AuthService, private router: Router) {
     this.authListenerSubs = this.authService.getAuthStatusListener()
-    .subscribe(user => {
-      this.currentUser = user;
-    })
+      .subscribe(user => {
+        this.currentUser = user;
+      })
   }
 
   get isLoggedIn() {
@@ -37,6 +36,8 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/'])
+    if (this.router.url !== '/requests') {
+      this.router.navigate(['/'])
+    }
   }
 }
