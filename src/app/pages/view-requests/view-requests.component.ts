@@ -64,9 +64,7 @@ export class ViewRequestsComponent implements OnInit {
     private _snackBar: MatSnackBar,
   ) {
     this.currentUser = this.userService.currentUser;
-    this.source = this.requestService.getRequests();
-    console.log(this.source)
-    // this.requests = this.requestService.getRequests();
+    this.requests = this.source = this.requestService.getRequests();
   }
 
   private dateOptions = ["Today", "Last 7 days", "Last 30 days"];

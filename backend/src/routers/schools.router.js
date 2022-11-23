@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { VerifyJwtToken } from '../middlewares/authenticate';
 import RequestStore from '../stores/request.store';
 
 import SchoolStore from '../stores/school.store';
@@ -64,6 +65,7 @@ schools.get(
 
 schools.post(
     '/:id/requests',
+    VerifyJwtToken,
     async (req, res) => {
         const createdRequest = await RequestStore.Create(
             req.params.id,

@@ -2,7 +2,7 @@ import createHttpError from 'http-errors';
 import jwt from 'jsonwebtoken';
 
 import env from '../environment';
-import { UserType } from '../models/user.model';
+import { UserModel, UserType } from '../models/user.model';
 
 export function SetCORS(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -24,13 +24,14 @@ export function VerifyJwtToken(req, res, next) {
     );
   }
 
-  jwt.verify(token, env.jwtAccessSecret, (err, payload) => {
+  jwt.verify(token, env.jwtAccessSecret, async (err, payload) => {
     if (err) {
       return next(
         createHttpError(403, 'unauthorized access to resource')
       );
     }
-    req.user = payload;
+    const user = await UserModel.findById(payload.id)
+    req.user = user;
     next();
   });
 }

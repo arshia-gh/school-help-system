@@ -21,7 +21,7 @@
     <mat-grid-tile>{{request.id}}</mat-grid-tile>
 
     <mat-grid-tile> Requested Date </mat-grid-tile>
-    <mat-grid-tile>{{$any(request).requestDate | date : 'dd/MM/yyyy hh:mm aa'}}</mat-grid-tile>
+    <mat-grid-tile>{{$any(request).createdAt | date : 'dd/MM/yyyy hh:mm aa'}}</mat-grid-tile>
 
     <mat-grid-tile>Resource Type</mat-grid-tile>
     <mat-grid-tile>{{$any(request).resourceType}}</mat-grid-tile>

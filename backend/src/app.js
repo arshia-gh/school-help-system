@@ -5,8 +5,8 @@ class Server {
     #url; #app; #server; #port; #host
 
     /**
-     * @param {Number} port 
-     * @param {String} host 
+     * @param {Number} port
+     * @param {String} host
      */
     constructor(port, host = 'localhost') {
         this.#port = port; this.#host = host;

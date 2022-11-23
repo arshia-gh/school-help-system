@@ -21,9 +21,9 @@ export const StudentLevel = {
 }
 
 export const ResourceType = {
-    MobileDevice: 'MobileDevice',
-    NetworkingEquipment: 'NetworkingEquipment',
-    PersonalComputer: 'PersonalComputer',
+    MobileDevice: 'Mobile Device',
+    NetworkingEquipment: 'Networking Equipment',
+    PersonalComputer: 'Personal Computer',
 }
 
 export const OfferStatus = {
@@ -55,7 +55,7 @@ RequestSchema.set('toJSON', {
 
 const TutorialSchema = new mongoose.Schema({
     proposedDateTime: Date,
-    numOfStudents: Number,
+    numOfStudent: Number,
     studentLevel: { type: String, enum: StudentLevel },
 })
 
