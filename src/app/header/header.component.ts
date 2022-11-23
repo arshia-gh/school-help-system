@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { User, UserType } from '@app/interfaces/User.interface';
 import { AuthService } from '@app/services/auth.service';
@@ -15,7 +16,7 @@ export class HeaderComponent implements OnInit {
   logoPath = '/assets/school_help_logo.png'
   currentUser: User;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private snackbar: MatSnackBar) {
     this.authListenerSubs = this.authService.getAuthStatusListener()
       .subscribe(user => {
         this.currentUser = user;
@@ -36,6 +37,11 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    this.snackbar.open('Logout Successful ', null, {
+      verticalPosition: 'top',
+      duration: 2000,
+      panelClass: ['info-snackbar']
+    })
     if (this.router.url !== '/requests') {
       this.router.navigate(['/'])
     }

@@ -60,14 +60,18 @@ export class LoginFormComponent {
     this._authService.login(username, password)
       .subscribe(user => {
         if (user) {
-          this._snackBar.open(`Successfully login as ${user['fullname']}`, null, {
+          this._snackBar.open(`Successfully login as ${user['type']} | ${user['fullname']}`, null, {
             duration: 3000,
+            panelClass: 'info-snackbar',
+            verticalPosition: 'top'
           })
           this._router.navigate(['/requests']);
         }
         else {
           this._snackBar.open('Incorrect username or password', null, {
-            duration: 3000,
+            duration:30000,
+            panelClass: 'error-snackbar',
+            verticalPosition: 'top'
           })
           this.form.reset()
         }

@@ -15,4 +15,4 @@ export interface Offer {
   dateOffered: Date
 }
 
-export type CreateOffer = Omit<Offer, "id" | 'status' | 'dateOffered'>;
+export type CreateOffer = Omit<Offer, "id" | 'status' | 'dateOffered' | 'volunteer' | 'status' | 'request'>;
