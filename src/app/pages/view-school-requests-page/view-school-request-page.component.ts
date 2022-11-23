@@ -3,10 +3,10 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatTable } from "@angular/material/table";
 import { Router } from "@angular/router";
 import { Request } from "@app/interfaces/Request.interface";
-import { CompleteSchoolAdmin, isAdmin, } from "@app/interfaces/User.interface";
+import { CompleteSchoolAdmin, } from "@app/interfaces/User.interface";
 import { AuthService } from "@app/services/auth.service";
 import { RequestService } from "@app/services/request.service";
-import { filter, map, Observable, switchMap } from "rxjs";
+import { BehaviorSubject, Observable, of, switchMap } from "rxjs";
 import { CreateRequestDialog } from "./create-request-dialog/create-request-dialog.component";
 import { ViewRequestDetailDialog } from "./view-request-details-dialog/view-request-dialog.component";
 
@@ -16,8 +16,8 @@ import { ViewRequestDetailDialog } from "./view-request-details-dialog/view-requ
   <div *ngIf="admin$ | async as admin" fxLayout="row" fxLayoutAlign="start end">
     <div>
       <h2>School: {{admin.school.name}}</h2>
-      <p *ngIf="school$ | async as school">
-      Located at: {{school.address.street}}, {{school.address.state}}, {{school.address.city}}
+      <p>
+        Located at: {{admin.school.address.street}}, {{admin.school.address.state}}, {{admin.school.address.city}}
       </p>
       <p>Your position: {{admin.position}}</p>
     </div>
@@ -71,6 +71,7 @@ import { ViewRequestDetailDialog } from "./view-request-details-dialog/view-requ
 export class ViewSchoolRequestPageComponent {
   @ViewChild(MatTable) private _table: MatTable<any>
 
+  fetchRequests$ = new BehaviorSubject<void>(undefined);
   requests$: Observable<Request[]>
   admin$: Observable<CompleteSchoolAdmin>
 
@@ -80,16 +81,20 @@ export class ViewSchoolRequestPageComponent {
 
   constructor(
     _authService: AuthService,
-    _requestService: RequestService,
+    private _requestService: RequestService,
 
     private _router: Router,
     private _dialog: MatDialog,
   ) {
-    this.requests$ = _authService.user$.pipe(
-      filter(isAdmin),
-      switchMap(user => _requestService.getSchoolRequests(user.school))
-    )
     this.admin$ = _authService.admin()
+    this.requests$ = this.fetchRequests$.pipe(
+      switchMap(() => this.admin$.pipe(
+          switchMap(
+            user => user ? _requestService.getSchoolRequests(user.school.id) : of([])
+          ),
+        )
+      )
+    )
   }
 
   createRequestClicked() {
@@ -99,23 +104,22 @@ export class ViewSchoolRequestPageComponent {
     })
 
     dialog.afterClosed().subscribe(() => {
+      this.fetchRequests$.next()
       this._table.renderRows()
     })
   }
 
   showDetails(id: string): void {
-    const selectedRequest = this.requests.find(req => req.id == id);
-    this._dialog.open(ViewRequestDetailDialog, {
-      width: '600px',
-      data: selectedRequest,
-    });
+    this._requestService.findById(id)
+      .subscribe(
+        request => this._dialog.open(ViewRequestDetailDialog, {
+          width: '600px',
+          data: request,
+        })
+      )
   }
 
   showOffers(requestId: string): void {
     this._router.navigate(['/dashboard/offers', requestId]);
-  }
-
-  get school$() {
-    return this.admin$.pipe(map(admin => admin.school))
   }
 }

@@ -56,6 +56,12 @@ export class RequestService {
     ).pipe(map(result => result.data))
   }
 
+  findById(id: string) {
+    return this.http
+      .get<SuccessResult<Resource>>(`http://localhost:8080/requests/${id}`)
+      .pipe(map(result => result.data))
+  }
+
   getById(id: string) {
     return this.requests.find(r => r.id === id);
   }

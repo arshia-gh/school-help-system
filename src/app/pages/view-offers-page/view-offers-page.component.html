@@ -1,5 +1,5 @@
 <div class="custom-background"></div>
-<div class="container my-3">
+<div *ngIf="request$ | async as request" class="container my-3">
   <h1>Request ID: {{request.id}}</h1>
   <h2>Description</h2>
   <p>{{request.description}}</p>

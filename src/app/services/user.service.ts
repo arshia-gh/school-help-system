@@ -13,7 +13,6 @@ export class UserService {
   constructor(private _router: Router, private _snackBar: MatSnackBar, private _http: HttpClient) { }
 
   updateAdmin(admin: CreateUser<SchoolAdmin>) {
-    console.log(admin.username)
     return this._http
       .patch<SuccessResult<SchoolAdmin>>(
         `http://localhost:8080/users/${admin.username}`, admin

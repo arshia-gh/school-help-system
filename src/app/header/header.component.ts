@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { User, UserType } from '@app/interfaces/User.interface';
 import { AuthService } from '@app/services/auth.service';
@@ -9,14 +9,14 @@ import { Subscription } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnDestroy {
 
   private authListenerSubs: Subscription;
   logoPath = '/assets/school_help_logo.png'
   currentUser: User;
 
   constructor(private authService: AuthService, private router: Router) {
-    this.authListenerSubs = this.authService.getAuthStatusListener()
+    this.authListenerSubs = this.authService.getUser()
       .subscribe(user => {
         this.currentUser = user;
       })
@@ -26,8 +26,8 @@ export class HeaderComponent implements OnInit {
     return this.currentUser != null;
   }
 
-  ngOnInit(): void {
-
+  ngOnDestroy(): void {
+    this.authListenerSubs.unsubscribe()
   }
 
   get isAdminUser() {

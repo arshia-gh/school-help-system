@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -7,6 +7,7 @@ import { Request, RequestStatus } from '@app/interfaces/Request.interface';
 import { OfferService } from '@app/services/offer.service';
 import { UserService } from '@app/services/user.service';
 import * as dayjs from 'dayjs';
+import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 import { RequestService } from 'src/app/services/request.service';
 
 @Component({
@@ -17,7 +18,9 @@ import { RequestService } from 'src/app/services/request.service';
 export class ViewOffersPageComponent implements OnInit {
 
   requestId: string;
-  request: Request;
+  fetchRequest$ = new BehaviorSubject<void>(undefined)
+  request$: Observable<Request>;
+
   displayedColumns: string[] = ['id', 'dateOffered', 'remarks'];
 
   constructor(
@@ -28,17 +31,22 @@ export class ViewOffersPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params: Params) => this.requestId = params['requestId']);
-    this.request = this.requestService.getById(this.requestId);
+    this.request$ = this.fetchRequest$.pipe(
+      switchMap(
+        () => this.route.params.pipe(
+          switchMap(params => this.requestService.findById(params['requestId']))
+        )
+      )
+    )
   }
 
   showDetails(id: string): void {
-    // const selectedOffer = this.offerService.getById(id);
-
-    // const dialogRef = this.dialog.open(OfferDetailDialog, {
-    //   width: '600px',
-    //   data: selectedOffer,
-    // });
+    this.request$.subscribe(request =>
+      this.dialog.open(OfferDetailDialog, {
+        width: '600px',
+        data: request.offers.find(offer => offer.id === id),
+      })
+    )
   }
 
 }

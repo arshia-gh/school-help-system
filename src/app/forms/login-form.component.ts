@@ -6,6 +6,7 @@ import { Required, touchFormFields } from 'src/utils/form-utils';
 import { FormStruct } from 'src/utils/ts-utils';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@app/services/auth.service';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-login-form',
@@ -57,18 +58,20 @@ export class LoginFormComponent {
 
     this._authService.login(username, password)
       .subscribe(user => {
-        if (user) {
-          this._snackBar.open(`Successfully login as ${user['fullname']}`, 'Ok', {
-            duration: 3000,
-          })
-          this._router.navigate(user.type !== UserType.SchoolAdmin ? ['/requests'] : ['/dashboard']);
-        }
-        else {
-          this._snackBar.open('Incorrect username or password', null, {
-            duration: 3000,
-          })
-          this.form.reset()
-        }
+          if (user) {
+            this._snackBar.open(`Successfully login as ${user['fullname']}`, 'Ok', {
+              duration: 3000,
+            })
+            this._router.navigate(
+              user.type !== UserType.SchoolAdmin ? ['/requests'] : ['/dashboard']
+            );
+          }
+          else {
+            this.form.reset()
+            this._snackBar.open('Incorrect username or password', null, {
+              duration: 3000,
+            })
+          }
       })
   }
 }
