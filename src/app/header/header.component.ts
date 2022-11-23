@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserType } from '@app/interfaces/User.interface';
+import { AuthService } from '@app/services/auth.service';
+import { Subscription } from 'rxjs';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -9,20 +12,23 @@ import { UserService } from '../services/user.service';
 })
 export class HeaderComponent implements OnInit {
 
+  private authListenerSubs: Subscription;
   logoPath = '/assets/school_help_logo.png'
-  currentUser = this.userService.currentUser;
-  isLoggedIn = false;
+  currentUser = null;
 
-  constructor(private userService: UserService) {
-    this.isLoggedIn = this.currentUser != null;
-
-    this.userService.authEvent.subscribe((e) => {
-      this.isLoggedIn = e.type === 'login';
-      this.currentUser = e.data;
+  constructor(private authService: AuthService, private router: Router) {
+    this.authListenerSubs = this.authService.getAuthStatusListener()
+    .subscribe(user => {
+      this.currentUser = user;
     })
   }
 
+  get isLoggedIn() {
+    return this.currentUser != null;
+  }
+
   ngOnInit(): void {
+
   }
 
   get isAdminUser() {
@@ -30,6 +36,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.userService.logout();
+    this.authService.logout();
+    this.router.navigate(['/'])
   }
 }
