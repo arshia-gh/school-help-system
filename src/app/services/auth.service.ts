@@ -38,7 +38,7 @@ export class AuthService {
           return user;
         }),
       );
-      this.user$
+    return this.user$
   }
 
   public logout() {

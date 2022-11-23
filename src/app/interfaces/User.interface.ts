@@ -32,8 +32,8 @@ export interface Volunteer extends BaseUser {
   type: UserType.Volunteer
 }
 
-export type CreateUser<UserType = BaseUser> = Omit<UserType, 'id' | 'type'>
-export type UserLogin = Pick<User, 'username'>
+export type CreateUser<UserType = BaseUser> = Omit<UserType, 'id' | 'type'> & { password: string }
+export type UserLogin = Pick<User, 'username'> & { password: string }
 
 export function isAdmin(user: User): user is SchoolAdmin {
   return user.type === UserType.SchoolAdmin
