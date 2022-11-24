@@ -31,7 +31,7 @@ export class SignUpPageComponent {
   @ViewChild(AdminSignUpFormComponent) adminForm: AdminSignUpFormComponent
   @ViewChild(VolunteerSignUpFormComponent) volunteerForm: VolunteerSignUpFormComponent
 
-  constructor(private _snackbar: MatSnackBar, private _router: Router) {}
+  constructor(private _snackbar: MatSnackBar, private _router: Router) { }
 
   tabChanged() {
     this.volunteerForm.form.reset()
@@ -44,12 +44,30 @@ export class SignUpPageComponent {
       : this.volunteerForm.submitHandler()
 
     if (result) (result as Observable<any>).subscribe(
-      () => {
-        this._router.navigate(['/auth/login'])
-        this._snackbar.open(
-          'Account has been successfully created', 'OK',
-          { duration: 2000 }
-        )
+      (res) => {
+        console.log(res)
+        if (res.error && res.error.code === 11000) { //duplicate
+          const field = res.error.duplicatedFields;
+          this._snackbar.open(
+            `The ${field} already exists`, null,
+            {
+              duration: 3000,
+              verticalPosition: 'top',
+              panelClass: 'error-snackbar'
+            });
+        }
+        else {
+          this._router.navigate(['/auth/login'])
+          this._snackbar.open(
+            'Account has been successfully created', 'OK',
+            {
+              duration: 2000,
+              verticalPosition: 'top',
+              panelClass: 'success-snackbar'
+            }
+          )
+        }
+
       }
     )
   }

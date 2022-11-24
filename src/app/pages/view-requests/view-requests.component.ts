@@ -88,11 +88,6 @@ export class ViewRequestsComponent implements OnInit {
     'Request Date': 'createdAt'
   };
 
-  private isFilteredByDate = () => this.filterBy === "Request Date";
-
-  private resolveProp = (obj, path) =>
-    path.split(".").reduce((o, p) => o ? o[p] : null, obj);
-
   filterByChanged(): void {
     this.filterValue = "None";
     this.requests = this.source;
@@ -112,16 +107,19 @@ export class ViewRequestsComponent implements OnInit {
     if (this.isFilteredByDate()) {
       let days = [0, 7, 30];
       let index = this.dateOptions.indexOf(this.filterValue);
-      const minDate: Date = new Date(
+
+      const minDate: Date = new Date(new Date(
         Date.now() - days[index] * 24 * 60 * 60 * 1000,
+      ).setHours(0, 0, 0, 0)); //get the date without time
+
+      this.requests = this.source.filter((r) => this.str2Date(r.createdAt) >= minDate);
+    }
+    else {
+      this.requests = this.source.filter((r) =>
+        this.filterValue === this.resolveProp(r, this.propPath[this.filterBy])
       );
-      console.log(minDate);
-      this.requests = this.source.filter((r) => r.createdAt > minDate);
     }
 
-    this.requests = this.source.filter((r) =>
-      this.filterValue === this.resolveProp(r, this.propPath[this.filterBy])
-    );
     this.table.renderRows();
   }
 
@@ -152,6 +150,18 @@ export class ViewRequestsComponent implements OnInit {
           });
       }
     });
+  }
+
+  //Utilities Functions
+  private isFilteredByDate = () => this.filterBy === "Request Date";
+
+  private resolveProp = (obj: object, path: string) =>
+    path.split(".").reduce((o, p) => o ? o[p] : null, obj);
+
+  private addDays = (date: Date, days: number) => new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
+
+  private str2Date(dateStr: string) {
+    return new Date(new Date(dateStr).setHours(0, 0, 0, 0));
   }
 }
 

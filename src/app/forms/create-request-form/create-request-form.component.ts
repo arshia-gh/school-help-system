@@ -99,7 +99,7 @@ export class CreateRequestFormComponent {
         this._requestService.addResource(
           {
             ...resource,
-            resourceType: StudentLevel[resource.resourceType]
+            resourceType: ResourceType[resource.resourceType]
           },
           admin.school.id
         )
