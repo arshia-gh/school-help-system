@@ -23,9 +23,9 @@ export interface BaseRequest {
 export type Request = BaseRequest & (Tutorial | Resource);
 
 export enum ResourceType {
-  MobileDevice = "MobileDevice",
-  PersonalComputer = "PersonalComputer",
-  NetworkingEquipment = "NetworkingEquipment",
+  MobileDevice = "Mobile Device",
+  PersonalComputer = "Personal Computer",
+  NetworkingEquipment = "Networking Equipment",
 }
 
 export enum StudentLevel {

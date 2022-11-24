@@ -21,9 +21,9 @@ export const StudentLevel = {
 }
 
 export const ResourceType = {
-    MobileDevice: 'MobileDevice',
-    NetworkingEquipment: 'NetworkingEquipment',
-    PersonalComputer: 'PersonalComputer',
+    MobileDevice: 'Mobile Device',
+    NetworkingEquipment: 'Networking Equipment',
+    PersonalComputer: 'Personal Computer',
 }
 
 export const OfferStatus = {

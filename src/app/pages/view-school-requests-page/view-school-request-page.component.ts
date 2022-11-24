@@ -42,7 +42,7 @@ import { ViewRequestDetailDialog } from "./view-request-details-dialog/view-requ
 
       <ng-container matColumnDef="requestDate">
         <th mat-header-cell *matHeaderCellDef> Request Date </th>
-        <td mat-cell *matCellDef="let req"> {{req.requestDate | date: 'dd MMMM, yyyy'}} </td>
+        <td mat-cell *matCellDef="let req"> {{req.createdAt | date: 'dd MMMM, yyyy'}} </td>
       </ng-container>
 
       <ng-container matColumnDef="options">
