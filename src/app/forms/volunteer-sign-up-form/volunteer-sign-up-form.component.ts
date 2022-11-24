@@ -76,13 +76,13 @@ export class VolunteerSignUpFormComponent {
     fb: NonNullableFormBuilder
   ) {
     this.form = fb.group({
-      username: ['helloworld', RRangeLength(6, 32, 'Username')],
-      password: ['123123', RRangeLength(6, 32, 'Password')],
-      email: ['hello@email.com', REmail],
-      fullname: ['arshiagh', RRangeLength(6, 32, 'Username')],
-      phoneNo: ['kjhkjhkj', [Required('Phone Number')]],
-      occupation: ['kjhjkjhj', [Required('Occupation')]],
-      dob: ['01/01/2000', [Required('Date of birth')]],
+      username: ['', RRangeLength(6, 32, 'Username')],
+      password: ['', RRangeLength(6, 32, 'Password')],
+      email: ['', REmail],
+      fullname: ['', RRangeLength(6, 32, 'Username')],
+      phoneNo: ['', [Required('Phone Number')]],
+      occupation: ['', [Required('Occupation')]],
+      dob: ['', [Required('Date of birth')]],
     })
   }
 
