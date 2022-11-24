@@ -85,7 +85,7 @@ export class ViewRequestsComponent implements OnInit {
   private propPath = {
     "School": "school.name",
     "City": "school.address.city",
-    // 'Request Date': 'requestDate'
+    'Request Date': 'createdAt'
   };
 
   private isFilteredByDate = () => this.filterBy === "Request Date";
@@ -116,7 +116,7 @@ export class ViewRequestsComponent implements OnInit {
         Date.now() - days[index] * 24 * 60 * 60 * 1000,
       );
       console.log(minDate);
-      this.requests = this.source.filter((r) => r.requestDate > minDate);
+      this.requests = this.source.filter((r) => r.createdAt > minDate);
     }
 
     this.requests = this.source.filter((r) =>
